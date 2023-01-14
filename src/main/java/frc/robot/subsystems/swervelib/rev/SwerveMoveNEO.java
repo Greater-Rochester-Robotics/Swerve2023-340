@@ -14,8 +14,6 @@ import frc.robot.subsystems.swervelib.interfaces.SwerveMoveBase;
 /** Add your docs here. */
 public class SwerveMoveNEO extends SwerveMoveBase{
     private CANSparkMax driveMotor;
-    private final double MINIMUM_DRIVE_SPEED = .2;
-    private final double MINIMUM_DRIVE_DUTY_CYCLE = 0.2;
     private boolean areValuesUpdated = false;
 
     public SwerveMoveNEO(int driveMotorID){
@@ -146,13 +144,4 @@ public class SwerveMoveNEO extends SwerveMoveBase{
         driveMotor.stopMotor();       
     }
 
-    @Override
-    public double getMinimumDriveSpeed() {
-        return MINIMUM_DRIVE_SPEED;
-    }
-
-    @Override
-    public double getMinimumDutyCycle() {
-        return MINIMUM_DRIVE_DUTY_CYCLE;
-    }
 }

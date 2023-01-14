@@ -75,23 +75,4 @@ public abstract class SwerveMoveBase {
      */
     public abstract void stopMotor();
 
-    /**
-     * A method to recall the minimum speed the motor 
-     * controller can output. This should be in meters 
-     * per second.
-     * 
-     * @return a positive double in meters per second
-     */
-    public abstract double getMinimumDriveSpeed();
-
-    /**
-     * A method to recall the minimum duty cycle the 
-     * motor controller can output. duty cycle is 
-     * from -1.0 to 1.0, but this value should be 
-     * below .1.
-     * 
-     * @return a positive double between 0 and 1
-     */
-    public abstract double getMinimumDutyCycle();
-
 }

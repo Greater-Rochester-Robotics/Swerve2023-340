@@ -679,7 +679,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   }
 
   /** {@inheritDoc} */
-  public void reset() {
+  public void resetAllAngles() {
     synchronized (this) {
       m_integ_angle_x = 0.0;
       m_integ_angle_y = 0.0;
