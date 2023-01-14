@@ -40,9 +40,8 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.swerveDrive.setGyroAxis(IMUAxis.kY);
     // RobotContainer.swerveDrive.setIsOdometry(false);
-    currentAngle = RobotContainer.swerveDrive.getGyroInRad();
+    currentAngle = RobotContainer.swerveDrive.getGyroInRadY();
     wasDriverControl = false;
     RobotContainer.swerveDrive.setIsOdometry(false);
   }
@@ -81,19 +80,19 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
         false
       );
       //for when rotation speed is zero, update the current angle
-      currentAngle = RobotContainer.swerveDrive.getGyroInRad();
+      currentAngle = RobotContainer.swerveDrive.getGyroInRadY();
       wasDriverControl = true;
 
     }
     else {
-      if(wasDriverControl && Math.abs(RobotContainer.swerveDrive.getRotationalVelocity()) > 90.0){
+      if(wasDriverControl && Math.abs(RobotContainer.swerveDrive.getRotationalVelocityY()) > 90.0){
         RobotContainer.swerveDrive.driveFieldRelative(
           awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
           lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
           0,
           false
         );
-        currentAngle = RobotContainer.swerveDrive.getGyroInRad();
+        currentAngle = RobotContainer.swerveDrive.getGyroInRadY();
       }else{
         //if the test is false, still use driveFieldCentric(), but for last parameter use PIDController accessor function
         RobotContainer.swerveDrive.driveFieldRelative(

@@ -39,7 +39,16 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
 
         
         RAD_TO_ENC_CONV_FACTOR = radToEncConvFactor;
+                
+        rotationMotor.getEncoder().setPositionConversionFactor(RAD_TO_ENC_CONV_FACTOR);
+        rotationMotor.getEncoder().setVelocityConversionFactor(RAD_TO_ENC_CONV_FACTOR);
+
+
         ABS_RAD_TO_ENC_CONV_FACTOR = absoluteRadToEncConvFactor; 
+
+        absoluteEncoder.setPositionConversionFactor(ABS_RAD_TO_ENC_CONV_FACTOR);
+        absoluteEncoder.setVelocityConversionFactor(ABS_RAD_TO_ENC_CONV_FACTOR);
+        
         absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);
         
         // use the integrated sensor with the primary closed loop and timeout is 0.
@@ -79,11 +88,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
             rotationMotor.enableVoltageCompensation(config.maxVoltage);
             areValuesUpdated = true;
         }
-        
-        rotationMotor.getEncoder().setPositionConversionFactor(RAD_TO_ENC_CONV_FACTOR);
-        rotationMotor.getEncoder().setVelocityConversionFactor(RAD_TO_ENC_CONV_FACTOR);
 
-        //TODO: WAIT FOR REV adjust for new sensor firmware to adjust frame periods
         rotationMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 2000);
         rotationMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
         rotationMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
@@ -160,13 +165,10 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
      * position as the current position of the module.
      */
     public void zeroAbsPositionSensor(){
-        //TODO: WAIT FOR REV write this
+        //set current position as zero, by making current sensor reading the offset
         absOffsetAngle = absoluteEncoder.getPosition();
+        //commit offset value to preferences table
         Preferences.setDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), absOffsetAngle);
-
-
-        
-
     }
 
     /**

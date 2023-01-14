@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -27,8 +28,7 @@ import frc.robot.subsystems.swervelib.ctre.SwerveAbsoluteCANCoder;
 import frc.robot.subsystems.swervelib.rev.NEOConfig;
 import frc.robot.subsystems.swervelib.rev.SwerveMoveNEO;
 import frc.robot.subsystems.swervelib.rev.SwerveRotationNEO;
-import frc.robot.subsystems.ADIS.CalibrationTime;
-import frc.robot.subsystems.ADIS.IMUAxis;
+
 
 /**
  * This subsystem contains all SwerveModule objects, and runs all drive functions.
@@ -37,7 +37,7 @@ import frc.robot.subsystems.ADIS.IMUAxis;
  * https://docs.google.com/presentation/d/1feVl0L5lgIKSZhKCheWgWhkOydIu-ibgdp7oqA0yqAQ/edit?usp=sharing
  */
 public class SwerveDrive extends SubsystemBase {
-
+  SwerveDrivePoseEstimator poseEst;
   private static SwerveMoveNEO swerveMoveNEO[];
   private static SwerveRotationNEO swerveRotationNEO[];
   private static SwerveAbsoluteCANCoder swerveAbsoluteCANCoder[];
@@ -317,7 +317,7 @@ public class SwerveDrive extends SubsystemBase {
     return currentAngle - absoluteCurrentAngle + desiredAngle;
   }
 
-  //TODO: make fuctions for MultiChannelADIS
+
   public double getXAngle(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kX);
   }
@@ -369,7 +369,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public Rotation2d getGyroRotation2d(){
     //return a newly constructed Rotation2d object, it takes the angle in radians as a constructor argument
-    return Rotation2d.fromDegrees(getGyroInDegX());
+    return Rotation2d.fromDegrees(getGyroInDegY());
     //note that counterclockwise rotation is positive
   }
 
@@ -462,19 +462,18 @@ public class SwerveDrive extends SubsystemBase {
 
   /**
    * Returns all values from the rotational motor's 
-   * reletive encoders in an array of doubles. This 
+   * relative encoders in an array of doubles. This 
    * array is in order of module number.
    * 
    * @return array of doubles, representing tick count.
    */
-  // public double[] getAllModuleRelEnc(){
-  //   double[] moduleRelEnc = new double[4];
-  //   for(int i=0; i<4; i++){
-  //     moduleRelEnc[i]=swerveModules[i].getRelEncCount();
-  //   }
-  //   return moduleRelEnc;
-  // }
-
+  public double[] getAllModuleRelEnc(){
+    double[] moduleRelEnc = new double[4];
+    for(int i=0; i<4; i++){
+      moduleRelEnc[i]=swerveRotationNEO[i].getRelEncCount();
+    }
+    return moduleRelEnc;
+  }
   /**
    * Returns the collective distance as seen by the 
    * drive motor's encoder, for each module.

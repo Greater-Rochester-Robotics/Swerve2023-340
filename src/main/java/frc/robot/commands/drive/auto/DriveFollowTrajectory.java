@@ -89,7 +89,6 @@ public class DriveFollowTrajectory extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.swerveDrive.setGyroAxis(IMUAxis.kY);
     //make sure odometry is on
     RobotContainer.swerveDrive.setIsOdometry(true);
 

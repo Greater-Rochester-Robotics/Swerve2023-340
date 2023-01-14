@@ -38,7 +38,6 @@ public class DriveFieldRelativeVelocity extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.swerveDrive.setGyroAxis(IMUAxis.kY);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

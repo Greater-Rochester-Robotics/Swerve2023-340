@@ -43,7 +43,6 @@ public class DriveStraightBack extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.swerveDrive.setGyroAxis(IMUAxis.kY);
     RobotContainer.swerveDrive.setIsOdometry(true);
     intpPose2d = RobotContainer.swerveDrive.getCurPose2d();
     curDistance = 0.0;
@@ -51,7 +50,7 @@ public class DriveStraightBack extends CommandBase {
     timer.reset();
     timer.start();
     curDistance = distance;
-    currentAngle = RobotContainer.swerveDrive.getGyroInRad();
+    currentAngle = RobotContainer.swerveDrive.getGyroInRadY();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

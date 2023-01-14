@@ -27,7 +27,6 @@ import frc.robot.commands.drive.DriveFieldRelative;
 import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
 
 import frc.robot.commands.drive.DriveRobotCentric;
-import frc.robot.commands.drive.DriveRobotCentricNoGyro;
 import frc.robot.commands.drive.DriveStopAllModules;
 import frc.robot.commands.drive.auto.DriveFollowTrajectory;
 import frc.robot.commands.drive.util.DriveAdjustModuleZeroPoint;
