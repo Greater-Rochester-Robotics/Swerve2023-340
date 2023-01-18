@@ -249,10 +249,10 @@ public class SwerveDrive extends SubsystemBase {
    * Stops all module motion, then lets all the modules spin freely.
    */
   public void stopAllModules(){
-    //run a for loop to call each mmodule
-    for (int i=0; i<4; i++){
+    //run a for loop to call each module
+    for (SwerveModule module : swerveModules) {
       //use the stopAll method, which stops both the drive and rotation motor.
-      swerveModules[i].stopAll();
+      module.stopAll();
     }
   }
 
@@ -506,8 +506,8 @@ public class SwerveDrive extends SubsystemBase {
    * these are the PIDF on the TalonFX
    */
   public void setDrivePIDF(double P, double I, double D, double F){
-    for (int i=0; i<4; i++){
-      swerveMoveNEO[i].setDriveMotorPIDF(P, I, D, F);
+    for(SwerveMoveNEO NEO : swerveMoveNEO) {
+      NEO.setDriveMotorPIDF(P, I, D, F);
     }
   }
 
@@ -518,8 +518,8 @@ public class SwerveDrive extends SubsystemBase {
   public void printAllModuleAngles(){
     //Use a for loop to and print() all modules' angles(degrees) on one line  
     System.out.print("Angle = ");
-    for(int i=0; i<4; i++){
-      System.out.print(swerveModules[i].getModulePosition().angle.getDegrees()+"\t");
+    for (SwerveModule module : swerveModules) {
+      System.out.print(module.getModulePosition().angle.getDegrees()+"\t");
     }
     //make sure to newline "\n" at the end
     System.out.print("\n");
@@ -532,9 +532,9 @@ public class SwerveDrive extends SubsystemBase {
    */
   public void zeroAllModulePosSensors(){
     //a for loop so cycle through all modules
-    for (int i=0; i<4; i++){
+    for (SwerveModule module : swerveModules) {
       //call the zero position method
-      swerveModules[i].zeroAbsPositionSensor();
+      module.zeroAbsPositionSensor();
     }
   }
 
