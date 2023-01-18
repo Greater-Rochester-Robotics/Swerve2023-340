@@ -14,6 +14,7 @@ package frc.robot.subsystems;
 // import java.lang.FdLibm.Pow;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.hal.SimBoolean;
 import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.networktables.NTSendable;
@@ -286,8 +287,10 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   private DigitalInput m_reset_in;
   private DigitalOutput m_status_led;
   private Thread m_acquire_task;
+  private boolean m_connected;
 
   private SimDevice m_simDevice;
+  private SimBoolean m_simConnected;
   private SimDouble m_simGyroAngleX;
   private SimDouble m_simGyroAngleY;
   private SimDouble m_simGyroAngleZ;
@@ -329,6 +332,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
 
     m_simDevice = SimDevice.create("Gyro:ADIS16470", port.value);
     if (m_simDevice != null) {
+      m_simConnected = m_simDevice.createBoolean("connected", SimDevice.Direction.kInput, true);
       m_simGyroAngleX = m_simDevice.createDouble("gyro_angle_x", SimDevice.Direction.kInput, 0.0);
       m_simGyroAngleY = m_simDevice.createDouble("gyro_angle_y", SimDevice.Direction.kInput, 0.0);
       m_simGyroAngleZ = m_simDevice.createDouble("gyro_angle_z", SimDevice.Direction.kInput, 0.0);
@@ -397,6 +401,14 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
 
     // Report usage and post data to DS
     HAL.report(tResourceType.kResourceType_ADIS16470, 0);
+    m_connected = true;
+  }
+
+  public boolean isConnected() {
+    if (m_simConnected != null) {
+      return m_simConnected.get();
+    }
+    return m_connected;
   }
 
   /**
@@ -475,9 +487,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
       System.out.println("Setting up a new SPI port.");
       m_spi = new SPI(m_spi_port);
       m_spi.setClockRate(2000000);
-      m_spi.setMSBFirst();
-      m_spi.setSampleDataOnTrailingEdge();
-      m_spi.setClockActiveLow();
+      m_spi.setMode(SPI.Mode.kMode3);
       m_spi.setChipSelectActiveLow();
       readRegister(PROD_ID); // Dummy read
 
@@ -595,7 +605,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
       return 2;
     }
     if (m_reg > 1999) {
-      DriverStation.reportError("Attemted to write an invalid deimation value.", false);
+      DriverStation.reportError("Attempted to write an invalid deimation value.", false);
       m_reg = 1999;
     }
     m_scaled_sample_rate = (((m_reg + 1.0) / 2000.0) * 1000000.0);
@@ -706,7 +716,9 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
     }
   }
 
-  /** Delete (free) the spi port used for the IMU. */
+  /** 
+   * Delete (free) the spi port used for the IMU. 
+   */
   @Override
   public void close() {
     if (m_thread_active) {
@@ -993,7 +1005,9 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
     return compAngle;
   }
 
-  /** @return Yaw axis angle in degrees (CCW positive) */
+  /** 
+   * @return Yaw axis angle in degrees (CCW positive) 
+   */
   public synchronized double getAngle(IMUAxis axis) {
     switch (axis) {
       case kX:
@@ -1017,7 +1031,9 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   }
 
 
-  /** @return Yaw axis angular rate in degrees per second (CCW positive) */
+  /** 
+   * @return Yaw axis angular rate in degrees per second (CCW positive) 
+   * */
   public synchronized double getRate(IMUAxis axis) {
     switch (axis) {
       case kX:
@@ -1040,42 +1056,58 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
       return 0.0;
   }
 
-  /** @return Yaw Axis */
+  /** 
+   * @return Yaw Axis 
+   */
   public IMUAxis getYawAxis() {
     return m_yaw_axis;
   }
 
-  /** @return current acceleration in the X axis */
+  /** 
+   * @return current acceleration in the X axis 
+   */
   public synchronized double getAccelX() {
     return m_accel_x * 9.81;
   }
 
-  /** @return current acceleration in the Y axis */
+  /** 
+   * @return current acceleration in the Y axis 
+   */
   public synchronized double getAccelY() {
     return m_accel_y * 9.81;
   }
 
-  /** @return current acceleration in the Z axis */
+  /** 
+   * @return current acceleration in the Z axis 
+   */
   public synchronized double getAccelZ() {
     return m_accel_z * 9.81;
   }
 
-  /** @return X axis complementary angle */
+  /** 
+   * @return X axis complementary angle 
+   */
   public synchronized double getXComplementaryAngle() {
     return m_compAngleX;
   }
 
-  /** @return Y axis complementary angle */
+  /** 
+   * @return Y axis complementary angle 
+   */
   public synchronized double getYComplementaryAngle() {
     return m_compAngleY;
   }
 
-  /** @return X axis filtered acceleration angle */
+  /** 
+   * @return X axis filtered acceleration angle 
+   */
   public synchronized double getXFilteredAccelAngle() {
     return m_accelAngleX;
   }
 
-  /** @return Y axis filtered acceleration angle */
+  /** 
+   * @return Y axis filtered acceleration angle 
+   */
   public synchronized double getYFilteredAccelAngle() {
     return m_accelAngleY;
   }
