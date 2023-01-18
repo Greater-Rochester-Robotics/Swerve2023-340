@@ -30,7 +30,7 @@ public class DriveAllModulesToPosition extends CommandBase {
   @Override
   public void execute() {
     double[] angles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
-    double targetAngle = angle - RobotContainer.swerveDrive.getGyroInRadZ();
+    double targetAngle = angle - RobotContainer.swerveDrive.getGyroInRadYaw();
     
     for(int i=0;i<4;i++ ){
       RobotContainer.swerveDrive.driveOneModule(i, 0, targetAngle, false);

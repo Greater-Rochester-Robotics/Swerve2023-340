@@ -74,14 +74,4 @@ public class SwerveMoveTalonFX extends SwerveMoveBase {
         driveMotor.set(TalonFXControlMode.PercentOutput, 0.0);
     }
 
-    public double getMinimumDriveSpeed() {
-        //TODO: Auto-generated method stub
-        return 0;
-    }
-
-    public double getMinimumDutyCycle() {
-        //TODO: Auto-generated method stub
-        return 0;
-    }
-
 }

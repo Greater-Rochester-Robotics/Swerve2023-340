@@ -27,9 +27,9 @@ public class DriveSetGyro extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.swerveDrive.setGyroAngleX(angle);
-    RobotContainer.swerveDrive.setGyroAngleY(angle);
-    RobotContainer.swerveDrive.setGyroAngleZ(angle);
+    RobotContainer.swerveDrive.setGyroRollAngle(angle);
+    RobotContainer.swerveDrive.setGyroPitchAngle(angle);
+    RobotContainer.swerveDrive.setGyroYawAngle(angle);
 
   }
 

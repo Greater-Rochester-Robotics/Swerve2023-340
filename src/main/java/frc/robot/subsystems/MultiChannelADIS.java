@@ -127,62 +127,62 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   private static final int FLSHCNT_LOW = 0x7C; // Flash update count, lower word
   private static final int FLSHCNT_HIGH = 0x7E; // Flash update count, upper word
 
-  private static final byte[] m_autospi_x_packet = {
-    X_DELTANG_OUT,
-    FLASH_CNT,
-    X_DELTANG_LOW,
-    FLASH_CNT,
-    X_GYRO_OUT,
-    FLASH_CNT,
-    Y_GYRO_OUT,
-    FLASH_CNT,
-    Z_GYRO_OUT,
-    FLASH_CNT,
-    X_ACCL_OUT,
-    FLASH_CNT,
-    Y_ACCL_OUT,
-    FLASH_CNT,
-    Z_ACCL_OUT,
-    FLASH_CNT
-  };
+  // private static final byte[] m_autospi_x_packet = {
+  //   X_DELTANG_OUT,
+  //   FLASH_CNT,
+  //   X_DELTANG_LOW,
+  //   FLASH_CNT,
+  //   X_GYRO_OUT,
+  //   FLASH_CNT,
+  //   Y_GYRO_OUT,
+  //   FLASH_CNT,
+  //   Z_GYRO_OUT,
+  //   FLASH_CNT,
+  //   X_ACCL_OUT,
+  //   FLASH_CNT,
+  //   Y_ACCL_OUT,
+  //   FLASH_CNT,
+  //   Z_ACCL_OUT,
+  //   FLASH_CNT
+  // };
 
-  private static final byte[] m_autospi_y_packet = {
-    Y_DELTANG_OUT,
-    FLASH_CNT,
-    Y_DELTANG_LOW,
-    FLASH_CNT,
-    X_GYRO_OUT,
-    FLASH_CNT,
-    Y_GYRO_OUT,
-    FLASH_CNT,
-    Z_GYRO_OUT,
-    FLASH_CNT,
-    X_ACCL_OUT,
-    FLASH_CNT,
-    Y_ACCL_OUT,
-    FLASH_CNT,
-    Z_ACCL_OUT,
-    FLASH_CNT
-  };
+  // private static final byte[] m_autospi_y_packet = {
+  //   Y_DELTANG_OUT,
+  //   FLASH_CNT,
+  //   Y_DELTANG_LOW,
+  //   FLASH_CNT,
+  //   X_GYRO_OUT,
+  //   FLASH_CNT,
+  //   Y_GYRO_OUT,
+  //   FLASH_CNT,
+  //   Z_GYRO_OUT,
+  //   FLASH_CNT,
+  //   X_ACCL_OUT,
+  //   FLASH_CNT,
+  //   Y_ACCL_OUT,
+  //   FLASH_CNT,
+  //   Z_ACCL_OUT,
+  //   FLASH_CNT
+  // };
 
-  private static final byte[] m_autospi_z_packet = {
-    Z_DELTANG_OUT,
-    FLASH_CNT,
-    Z_DELTANG_LOW,
-    FLASH_CNT,
-    X_GYRO_OUT,
-    FLASH_CNT,
-    Y_GYRO_OUT,
-    FLASH_CNT,
-    Z_GYRO_OUT,
-    FLASH_CNT,
-    X_ACCL_OUT,
-    FLASH_CNT,
-    Y_ACCL_OUT,
-    FLASH_CNT,
-    Z_ACCL_OUT,
-    FLASH_CNT
-  };
+  // private static final byte[] m_autospi_z_packet = {
+  //   Z_DELTANG_OUT,
+  //   FLASH_CNT,
+  //   Z_DELTANG_LOW,
+  //   FLASH_CNT,
+  //   X_GYRO_OUT,
+  //   FLASH_CNT,
+  //   Y_GYRO_OUT,
+  //   FLASH_CNT,
+  //   Z_GYRO_OUT,
+  //   FLASH_CNT,
+  //   X_ACCL_OUT,
+  //   FLASH_CNT,
+  //   Y_ACCL_OUT,
+  //   FLASH_CNT,
+  //   Z_ACCL_OUT,
+  //   FLASH_CNT
+  // };
 
   private static final byte[] m_autospi_allAngle_packet = {
     X_DELTANG_OUT,

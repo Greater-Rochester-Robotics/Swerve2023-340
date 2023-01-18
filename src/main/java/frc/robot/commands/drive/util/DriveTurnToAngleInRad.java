@@ -4,6 +4,8 @@
 
 package frc.robot.commands.drive.util;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -12,8 +14,16 @@ import frc.robot.RobotContainer;
 
 public class DriveTurnToAngleInRad extends CommandBase {
   private double angle = 0;
+  private DoubleSupplier angleSupplier;
   private int onTargetCount;
+  private boolean isDoubleSupplierMode = false;
   private boolean angleTooBig = false;
+
+  public DriveTurnToAngleInRad(DoubleSupplier angleSupplier) {
+    isDoubleSupplierMode = true;
+    addRequirements(RobotContainer.swerveDrive);
+    this.angleSupplier = angleSupplier;
+  }
 
   /** Creates a new DriveTurnToAngle. This command 
    * is used in tuning PID for rotation and in 
@@ -29,13 +39,16 @@ public class DriveTurnToAngleInRad extends CommandBase {
       angle = 0.0;
       angleTooBig = true;
     }
-    
     this.angle = angle;
+    isDoubleSupplierMode = false;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(isDoubleSupplierMode) {
+      this.angle = angleSupplier.getAsDouble();
+    }
     onTargetCount = 0;
   }
 
@@ -45,7 +58,7 @@ public class DriveTurnToAngleInRad extends CommandBase {
     double output = RobotContainer.swerveDrive.getRobotRotationPIDOut(angle);
     // System.out.println("pid output"+output);
     RobotContainer.swerveDrive.driveRobotCentric(0, 0, output, false, true);
-    if(Math.abs(angle - RobotContainer.swerveDrive.getGyroInRadZ()) < .03){
+    if(Math.abs(angle - RobotContainer.swerveDrive.getGyroInRadYaw()) < .03){
       onTargetCount++;
     }else{
       onTargetCount = 0;

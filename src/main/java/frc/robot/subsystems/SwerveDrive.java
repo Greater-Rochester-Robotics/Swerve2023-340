@@ -138,9 +138,9 @@ public class SwerveDrive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("GyroX", this.getGyroInDegX());
-    SmartDashboard.putNumber("GyroY", this.getGyroInDegY());
-    SmartDashboard.putNumber("GyroZ", this.getGyroInDegZ());
+    SmartDashboard.putNumber("GyroX", this.getGyroInDegRoll());
+    SmartDashboard.putNumber("GyroY", this.getGyroInDegPitch());
+    SmartDashboard.putNumber("GyroZ", this.getGyroInDegYaw());
 
     // SmartDashboard.putNumber("GyroZ", this.getGyroInDegZ());
     //run odometry update on the odometry object
@@ -292,7 +292,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public double getAngleOfTarget(){
     //get the current angle    
-    double currentAngle = getGyroInRadX();
+    double currentAngle = getGyroInRadRoll();
 
     //if the pose hasn't been set return current angle.
     if(!hasPoseBeenSet){
@@ -318,15 +318,15 @@ public class SwerveDrive extends SubsystemBase {
   }
 
 
-  public double getXAngle(){
+  public double getRollAngle(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kX);
   }
 
-  public double getYAngle(){
+  public double getPitchAngle(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kY);
   }
 
-  public double getZAngle(){
+  public double getYawAngle(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kZ);
   }
 
@@ -347,15 +347,15 @@ public class SwerveDrive extends SubsystemBase {
    * for gyro.
    * @param newCurrentAngle value the gyro should now read in degrees.
    */
-  public void setGyroAngleY(double newCurrentAngle){
+  public void setGyroPitchAngle(double newCurrentAngle){
     imu.setGyroAngleY(newCurrentAngle);
   }
 
-  public void setGyroAngleX(double newCurrentAngle){
+  public void setGyroRollAngle(double newCurrentAngle){
     imu.setGyroAngleX(newCurrentAngle);
   }
 
-  public void setGyroAngleZ(double newCurrentAngle){
+  public void setGyroYawAngle(double newCurrentAngle){
     imu.setGyroAngleZ(newCurrentAngle);
   }
 
@@ -369,7 +369,7 @@ public class SwerveDrive extends SubsystemBase {
    */
   public Rotation2d getGyroRotation2d(){
     //return a newly constructed Rotation2d object, it takes the angle in radians as a constructor argument
-    return Rotation2d.fromDegrees(getGyroInDegY());
+    return Rotation2d.fromDegrees(getGyroInDegYaw());
     //note that counterclockwise rotation is positive
   }
 
@@ -384,44 +384,55 @@ public class SwerveDrive extends SubsystemBase {
   //   //note that counterclockwise rotation is positive
   // }
 
-  public double getGyroInRadX(){
-    return Math.toRadians(getGyroInDegX());
+  public double getGyroInRadRoll(){
+    return Math.toRadians(getGyroInDegRoll());
   }
 
-  public double getGyroInRadY(){
-    return Math.toRadians(getGyroInDegY());
+  public double getGyroInRadPitch(){
+    return Math.toRadians(getGyroInDegPitch());
   }
 
-  public double getGyroInRadZ(){
-    return Math.toRadians(getGyroInDegZ());
+  public double getGyroInRadYaw(){
+    return Math.toRadians(getGyroInDegYaw());
   }
 
-  public double getGyroInDegX(){
+  public double getGyroInDegRoll(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kX);
   }
 
-  public double getGyroInDegY(){
+  public double getGyroInDegPitch(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kY);
   }
 
-  public double getGyroInDegZ(){
+  public double getGyroInDegYaw(){
     return imu.getAngle(MultiChannelADIS.IMUAxis.kZ);    
   }
+
   /**
    * Returns the speed of rotation of the robot, 
    * counterclockwise is positive.
    * @return degrees per second
    */
-   public double getRotationalVelocityX(){
+   public double getRotationalVelocityRoll(){
     return imu.getRate(MultiChannelADIS.IMUAxis.kX);
   }
 
-  public double getRotationalVelocityY(){
+  public double getRotationalVelocityPitch(){
     return imu.getRate(MultiChannelADIS.IMUAxis.kY);
   }
 
-  public double getRotationalVelocityZ(){
+  public double getRotationalVelocityYaw(){
     return imu.getRate(MultiChannelADIS.IMUAxis.kZ);
+  }
+
+  public double findNearestAngle() {
+    double currentAngle = getYawAngle();
+    double distance = currentAngle % 90;
+    if(Math.abs(distance) > 45) {
+      return currentAngle + (Math.signum(distance)*90 - distance);
+    }else{
+      return currentAngle - distance;
+    }
   }
 
   public SwerveModulePosition[] getSwerveModulePositions(){
@@ -544,7 +555,7 @@ public class SwerveDrive extends SubsystemBase {
    * @return a value to give the rotational input, -1.0 to 1.0
    */
   public double getRobotRotationPIDOut(double target){
-    double currentGyroPos = getGyroInRadX();
+    double currentGyroPos = getGyroInRadRoll();
     double output = robotSpinController.calculate(currentGyroPos, target);
     // System.out.println("targetAngle:"+Math.toDegrees(target)+"   angle:"+Math.toDegrees(currentGyroPos)+"atSP:"+robotSpinController.atSetpoint()+"  pid output"+output);
     if(robotSpinController.atSetpoint()){
@@ -559,7 +570,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public double getCounterRotationPIDOut(double target){
-    double currentGyroPos = getGyroInRadX();
+    double currentGyroPos = getGyroInRadRoll();
     return robotCounterSpinController.calculate(currentGyroPos, target);
   }
 
