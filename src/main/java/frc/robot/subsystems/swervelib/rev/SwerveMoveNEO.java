@@ -9,12 +9,13 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
-import frc.robot.subsystems.swervelib.interfaces.SwerveMoveBase;
+import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 
 /** Add your docs here. */
-public class SwerveMoveNEO extends SwerveMoveBase{
+public class SwerveMoveNEO implements SwerveMoveMotor{
     private CANSparkMax driveMotor;
     private boolean areValuesUpdated = false;
+
 
     public SwerveMoveNEO(int driveMotorID){
         driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
@@ -29,6 +30,7 @@ public class SwerveMoveNEO extends SwerveMoveBase{
         driveMotor.burnFlash();
     }
 
+    //TODO: add a parameter that does the conversion factor.
     public SwerveMoveNEO(int driveMotorID, NEOConfig config){
         areValuesUpdated = false;
         driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
@@ -68,8 +70,9 @@ public class SwerveMoveNEO extends SwerveMoveBase{
             driveMotor.enableVoltageCompensation(config.maxVoltage);
             areValuesUpdated = true;
         }
+
+        //TODO: set the position and velocity conversion factors to the motor
         
-        //TODO: WAIT FOR REV adjust for new sensor firmware to adjust frame periods
         driveMotor.setInverted(false);// Set motor inverted(set to false)
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 1000);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20); 
@@ -95,7 +98,7 @@ public class SwerveMoveNEO extends SwerveMoveBase{
     }
 
     public double getDriveDistance(){
-        return driveMotor.getEncoder().getPosition();//TODO: this is not scalled to meters
+        return driveMotor.getEncoder().getPosition();
     }
 
     public void setDriveMotorBrake(boolean brakeOn){
@@ -108,7 +111,7 @@ public class SwerveMoveNEO extends SwerveMoveBase{
     }
 
     public double getDriveVelocity(){
-        return driveMotor.getEncoder().getVelocity();//TODO: this is not scalled to meters per second
+        return driveMotor.getEncoder().getVelocity();
     }
 
     public void resetDriveMotorEncoder(){
@@ -116,22 +119,10 @@ public class SwerveMoveNEO extends SwerveMoveBase{
     }
     
     public void setDriveMotorPIDF(double P, double I, double D, double F){
-        if(driveMotor.getPIDController().getP() != P){
-            driveMotor.getPIDController().setP(P);
-            areValuesUpdated = true;
-        }
-        if(driveMotor.getPIDController().getI() != I){
-            driveMotor.getPIDController().setI(I);
-            areValuesUpdated = true;
-        }
-        if(driveMotor.getPIDController().getD() != D){
-            driveMotor.getPIDController().setD(D);
-            areValuesUpdated = true;
-        }
-        if(driveMotor.getPIDController().getFF() != F){
-            driveMotor.getPIDController().setFF(F);
-            areValuesUpdated = true;
-        }
+        driveMotor.getPIDController().setP(P);
+        driveMotor.getPIDController().setI(I);
+        driveMotor.getPIDController().setD(D);
+        driveMotor.getPIDController().setFF(F);
     }
 
     public void enableVoltageCompensation(double maximumVoltage){

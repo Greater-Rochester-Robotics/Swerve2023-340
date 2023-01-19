@@ -8,15 +8,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
-import frc.robot.subsystems.swervelib.interfaces.SwerveMoveBase;
+import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 
 /** Add your docs here. */
-public class SwerveMoveTalonFX extends SwerveMoveBase {
+public class SwerveMoveTalonFX implements SwerveMoveMotor {
     //TODO:finish writing this class
     private TalonFX driveMotor;
 
+
+    //TODO:Make a constructor needs a talonFX id, a TalonFX config object, a conversion factor(meters) 
+    //TODO: setup the motor in constructor
     public void setDriveDutyCycle(double dutyCycle){
         driveMotor.set(ControlMode.PercentOutput, dutyCycle);
     }

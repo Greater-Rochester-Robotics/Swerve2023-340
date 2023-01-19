@@ -117,7 +117,7 @@ public class SwerveDrive extends SubsystemBase {
       Constants.REAR_RIGHT_POSITION, Constants.FRONT_RIGHT_POSITION);
 
     // Constructs IMU object (gyro)
-    imu = new MultiChannelADIS();//Must use params, won't work without
+    imu = new MultiChannelADIS();
 
     //construct the odometry class.
     driveOdometry = new SwerveDriveOdometry(driveKinematics, getGyroRotation2d(), getSwerveModulePositions());

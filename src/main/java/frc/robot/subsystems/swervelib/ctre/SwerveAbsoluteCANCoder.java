@@ -12,20 +12,29 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.swervelib.interfaces.SwerveAbsoluteSensor;
 
 /** 
- * This class is the way to create a CANCoder object for use in the 
+ * This class is the way to create a CANCoder object for use in the SwerveModule
  */
 public class SwerveAbsoluteCANCoder implements SwerveAbsoluteSensor{
     CANCoder rotateAbsSensor;
 
+    /**
+     * 
+     * @param canCoderID The CAN Device ID for the CANCoder
+     */
     public SwerveAbsoluteCANCoder(int canCoderID){
         this( canCoderID, false);
     }
 
+    /**
+     * 
+     * @param canCoderID The CAN Device ID for the CANCoder
+     * @param isInverted If the CANCoder is inverted (placed underneath the module facing up)
+     */
     public SwerveAbsoluteCANCoder(int canCoderID, boolean isInverted){
         //the following sensor is angle of the module, as an absolute value
         rotateAbsSensor = new CANCoder(canCoderID);
 
-        //If the CANCoder is underneath the module, LED face down, it must be inverted
+        //If the CANCoder is underneath the module, LED toward the floor, it must be inverted
         rotateAbsSensor.configSensorDirection(isInverted);
 
         //configure the cancoder to read values between -180 to 180
@@ -66,7 +75,6 @@ public class SwerveAbsoluteCANCoder implements SwerveAbsoluteSensor{
      * The CANCoder reads the absolute rotational position
      * of the module. This method returns that positon in 
      * degrees.
-     * note: NOT Inverted module safe (use getPosInRad())
      * 
      * @return the position of the module in degrees, should limit from -180 to 180
      */
@@ -102,7 +110,8 @@ public class SwerveAbsoluteCANCoder implements SwerveAbsoluteSensor{
 
     /**
      * Returns the speed that the module is rotating.
-     * @return double speed of module
+     * 
+     * @return double speed of module in radians per second
      */
     public double getSpeedInRad(){
         return Math.toRadians(rotateAbsSensor.getVelocity());

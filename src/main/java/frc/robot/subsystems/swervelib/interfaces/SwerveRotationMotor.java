@@ -53,13 +53,4 @@ public interface SwerveRotationMotor {
      */
     public void stopRotation();
     
-    /**
-     * This is a factor by which the rotation motor's encoder value is 
-     * multiplied by to convert it to measurements in radians of the 
-     * module's rotation. This value might takes into account the 
-     * gearing of the motor depending on encoder location.
-     * 
-     * @return a double
-     */
-    public double radToEncConvFactor();
 }

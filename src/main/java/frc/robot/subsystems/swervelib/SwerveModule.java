@@ -10,7 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Constants;
 import frc.robot.subsystems.swervelib.interfaces.SwerveAbsoluteSensor;
-import frc.robot.subsystems.swervelib.interfaces.SwerveMoveBase;
+import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 import frc.robot.subsystems.swervelib.rev.SwerveRotationNEO;
 
@@ -24,7 +24,7 @@ import frc.robot.subsystems.swervelib.rev.SwerveRotationNEO;
  * https://docs.google.com/presentation/d/1feVl0L5lgIKSZhKCheWgWhkOydIu-ibgdp7oqA0yqAQ/edit?usp=sharing
  */
 public class SwerveModule {
-    private SwerveMoveBase driveMotor;
+    private SwerveMoveMotor driveMotor;
     private SwerveRotationMotor rotationMotor;
     private SwerveAbsoluteSensor absSensor;
     private double varOfRelToAbs;
@@ -39,14 +39,14 @@ public class SwerveModule {
      * 
      * @param driveMotor a SwerveDriveBase object, which
      */
-    public SwerveModule(SwerveMoveBase driveMotor, SwerveRotationMotor rotationMotor, SwerveAbsoluteSensor rotationAbsSensor) {
+    public SwerveModule(SwerveMoveMotor driveMotor, SwerveRotationMotor rotationMotor, SwerveAbsoluteSensor rotationAbsSensor) {
         this.driveMotor = driveMotor;
         this.rotationMotor = rotationMotor;
         this.absSensor = rotationAbsSensor;
 
     }
 
-    public SwerveModule(SwerveMoveBase driveMotor, SwerveRotationNEO rotationNEO){
+    public SwerveModule(SwerveMoveMotor driveMotor, SwerveRotationNEO rotationNEO){
         this.driveMotor = driveMotor;
         this.rotationMotor = rotationNEO;
         this.absSensor = rotationNEO;
@@ -63,7 +63,7 @@ public class SwerveModule {
      * 
      * @return the drive motor object for this module
      */
-    public SwerveMoveBase getDriveMotor(){
+    public SwerveMoveMotor getDriveMotor(){
         return driveMotor;
     }
 

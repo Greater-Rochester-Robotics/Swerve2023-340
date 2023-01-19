@@ -13,7 +13,6 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Preferences;
-import frc.robot.Constants;
 import frc.robot.subsystems.swervelib.interfaces.SwerveAbsoluteSensor;
 import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 
@@ -24,6 +23,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
     public final double RAD_TO_ENC_CONV_FACTOR;
     public final double ABS_RAD_TO_ENC_CONV_FACTOR;
     public double absOffsetAngle;
+
     public SwerveRotationNEO(int rotationMotorID, double radToEncConvFactor){
         this(rotationMotorID, radToEncConvFactor, new NEOConfig());
     }
@@ -49,7 +49,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
         absoluteEncoder.setPositionConversionFactor(ABS_RAD_TO_ENC_CONV_FACTOR);
         absoluteEncoder.setVelocityConversionFactor(ABS_RAD_TO_ENC_CONV_FACTOR);
         
-        absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);
+        absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
         
         // use the integrated sensor with the primary closed loop and timeout is 0.
         boolean areValuesUpdated = false;
@@ -153,10 +153,6 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
         rotationMotor.stopMotor();
     }
 
-    public double radToEncConvFactor(){
-        return RAD_TO_ENC_CONV_FACTOR;
-    }
-
     //external sensor 
 
     /**
@@ -166,7 +162,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
      */
     public void zeroAbsPositionSensor(){
         //set current position as zero, by making current sensor reading the offset
-        absOffsetAngle = absoluteEncoder.getPosition();
+        absOffsetAngle = absoluteEncoder.getPosition();//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
         //commit offset value to preferences table
         Preferences.setDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), absOffsetAngle);
     }
@@ -190,7 +186,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
      * @return the position of the module in radians, should limit from -PI to PI
      */
     public double getPosInRad(){
-        return absoluteEncoder.getPosition() - absOffsetAngle;
+        return absoluteEncoder.getPosition() - absOffsetAngle;//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
     }
 
     /**
@@ -206,10 +202,14 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
         return new Rotation2d(getPosInRad());
     }
 
+    /**
+     * This method gets the current velocity of the module in 
+     * radians per second and is zero if the module is stopped.
+     * 
+     * @return the velocity of the module in radians per second
+     */
     public double getSpeedInRad(){
         return absoluteEncoder.getVelocity();
     }
-
-    
 
 }

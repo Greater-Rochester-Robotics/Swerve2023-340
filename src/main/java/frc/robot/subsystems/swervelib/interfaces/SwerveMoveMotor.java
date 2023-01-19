@@ -9,7 +9,7 @@ package frc.robot.subsystems.swervelib.interfaces;
  * swerve module. This motor is expected to drive the module wheel 
  * forward and backward. 
  */
-public abstract class SwerveMoveBase {
+public interface SwerveMoveMotor {
 
     /**
      * Set the speed of the drive motor in percent duty cycle
