@@ -20,34 +20,34 @@ import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSensor {
     private CANSparkMax rotationMotor;
     private AbsoluteEncoder absoluteEncoder;
-    public final double RAD_TO_ENC_CONV_FACTOR;
-    public final double ABS_RAD_TO_ENC_CONV_FACTOR;
+    public final double ENC_TO_RAD_CONV_FACTOR;
+    public final double ABS_ENC_TO_RAD_CONV_FACTOR;
     public double absOffsetAngle;
 
-    public SwerveRotationNEO(int rotationMotorID, double radToEncConvFactor){
-        this(rotationMotorID, radToEncConvFactor, new NEOConfig());
+    public SwerveRotationNEO(int rotationMotorID, double encToRadConvFactor){
+        this(rotationMotorID, encToRadConvFactor, new NEOConfig());
     }
 
-    public SwerveRotationNEO(int rotationMotorID, double radToEncConvFactor, NEOConfig config){
-        this(rotationMotorID, radToEncConvFactor, config, 0);
+    public SwerveRotationNEO(int rotationMotorID, double encToRadConvFactor, NEOConfig config){
+        this(rotationMotorID, encToRadConvFactor, config, 0);
         
     }
-    public SwerveRotationNEO(int rotationMotorID, double radToEncConvFactor, NEOConfig config, double absoluteRadToEncConvFactor){
+    public SwerveRotationNEO(int rotationMotorID, double encToRadConvFactor, NEOConfig config, double absEncToRadConvFactor){
         //contruct and setup rotation NEO
         rotationMotor = new CANSparkMax(rotationMotorID, MotorType.kBrushless);
         absoluteEncoder = rotationMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
         
-        RAD_TO_ENC_CONV_FACTOR = radToEncConvFactor;
+        ENC_TO_RAD_CONV_FACTOR = encToRadConvFactor;
                 
-        rotationMotor.getEncoder().setPositionConversionFactor(RAD_TO_ENC_CONV_FACTOR);
-        rotationMotor.getEncoder().setVelocityConversionFactor(RAD_TO_ENC_CONV_FACTOR);
+        rotationMotor.getEncoder().setPositionConversionFactor(ENC_TO_RAD_CONV_FACTOR);
+        rotationMotor.getEncoder().setVelocityConversionFactor(ENC_TO_RAD_CONV_FACTOR);
 
 
-        ABS_RAD_TO_ENC_CONV_FACTOR = absoluteRadToEncConvFactor; 
+        ABS_ENC_TO_RAD_CONV_FACTOR = absEncToRadConvFactor; 
 
-        absoluteEncoder.setPositionConversionFactor(ABS_RAD_TO_ENC_CONV_FACTOR);
-        absoluteEncoder.setVelocityConversionFactor(ABS_RAD_TO_ENC_CONV_FACTOR);
+        absoluteEncoder.setPositionConversionFactor(ABS_ENC_TO_RAD_CONV_FACTOR);
+        absoluteEncoder.setVelocityConversionFactor(ABS_ENC_TO_RAD_CONV_FACTOR);
         
         absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
         

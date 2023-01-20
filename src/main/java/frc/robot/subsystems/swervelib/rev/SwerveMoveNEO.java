@@ -24,7 +24,7 @@ public class SwerveMoveNEO implements SwerveMoveMotor{
         this(driveMotorID, config, 0.0);
     }
 
-    public SwerveMoveNEO(int driveMotorID, NEOConfig config, double conversionFactor){
+    public SwerveMoveNEO(int driveMotorID, NEOConfig config, double encToMetersConvFactor){
         areValuesUpdated = false;
         driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
 
@@ -64,8 +64,8 @@ public class SwerveMoveNEO implements SwerveMoveMotor{
             areValuesUpdated = true;
         }
 
-        driveMotor.getEncoder().setPositionConversionFactor(conversionFactor);
-        driveMotor.getEncoder().setVelocityConversionFactor(conversionFactor);
+        driveMotor.getEncoder().setPositionConversionFactor(encToMetersConvFactor);
+        driveMotor.getEncoder().setVelocityConversionFactor(encToMetersConvFactor);
         
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 1000);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20); 

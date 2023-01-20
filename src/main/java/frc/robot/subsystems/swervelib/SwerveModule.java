@@ -195,14 +195,6 @@ public class SwerveModule {
         
         // Optimize targetState with Rotation2d object pulled from above
         targetState = optimize(targetState, currentAngle);
-        
-        //TODO:add this to a higher layer to optimize it
-        // if(Math.abs(targetState.speedMetersPerSecond) < 
-        //     (isVeloMode?driveMotor.getMinimumDriveSpeed():driveMotor.getMinimumDutyCycle())) {
-        //     stopAll();
-        // } else {
-            
-        // }
 
         // Set position
         this.setModuleAngle(currentAngle, targetState.angle, currentRelPos);

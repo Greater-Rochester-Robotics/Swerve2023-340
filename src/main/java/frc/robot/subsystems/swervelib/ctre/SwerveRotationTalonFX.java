@@ -9,7 +9,7 @@ import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 /** Add your docs here. */
 public class SwerveRotationTalonFX implements SwerveRotationMotor {
 
-    //TODO:Make a constructor needs a talonFX id, a TalonfxX config object, a conversion factor(meters)
+    //TODO:Make a constructor needs a talonFX id, a TalonfX config object, a conversion factor(meters)
 
     @Override
     public void setRotationMotorPIDF(double P, double I, double D, double F) {
