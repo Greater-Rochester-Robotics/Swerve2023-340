@@ -76,19 +76,19 @@ public class SwerveDrive extends SubsystemBase {
     NEOConfig moveConfig = new NEOConfig(movePidF, false, false, Constants.MAXIMUM_VOLTAGE);
     
     swerveMoveNEO = new SwerveMoveNEO[]{
-      new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig), 
-      new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig), 
-      new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig), 
-      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig)
+      new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR  )
     };
     SwervePIDFConfig rotatePIDF = new SwervePIDFConfig(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE, Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
     NEOConfig rotateConfig = new NEOConfig(rotatePIDF, false, false, Constants.MAXIMUM_VOLTAGE);
 
     swerveRotationNEO = new SwerveRotationNEO[]{
-      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig)
+      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
+      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
+      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
+      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig)
     };
 
     swerveAbsoluteCANCoder = new SwerveAbsoluteCANCoder[]{

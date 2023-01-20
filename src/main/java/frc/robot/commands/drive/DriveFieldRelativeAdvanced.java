@@ -81,6 +81,7 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
       );
       //for when rotation speed is zero, update the current angle
       currentAngle = RobotContainer.swerveDrive.getGyroInRadPitch();
+      //means that driver wants to turn so don't run counter rotation PID
       wasDriverControl = true;
 
     }

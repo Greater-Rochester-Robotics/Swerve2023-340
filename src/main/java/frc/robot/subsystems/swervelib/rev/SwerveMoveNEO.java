@@ -16,22 +16,15 @@ public class SwerveMoveNEO implements SwerveMoveMotor{
     private CANSparkMax driveMotor;
     private boolean areValuesUpdated = false;
 
-
     public SwerveMoveNEO(int driveMotorID){
-        driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
-
-        // above uses configSelectedFeedbackCoefficient(), to scale the
-        // driveMotor to real distance, DRIVE_ENC_TO_METERS_FACTOR
-        driveMotor.setInverted(false);// Set motor inverted(set to false)
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 1000);
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20); 
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 1000);
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
-        driveMotor.burnFlash();
+        this(driveMotorID, new NEOConfig());
     }
 
-    //TODO: add a parameter that does the conversion factor.
-    public SwerveMoveNEO(int driveMotorID, NEOConfig config){
+    public SwerveMoveNEO(int driveMotorID, NEOConfig config) {
+        this(driveMotorID, config, 0.0);
+    }
+
+    public SwerveMoveNEO(int driveMotorID, NEOConfig config, double conversionFactor){
         areValuesUpdated = false;
         driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
 
@@ -71,9 +64,9 @@ public class SwerveMoveNEO implements SwerveMoveMotor{
             areValuesUpdated = true;
         }
 
-        //TODO: set the position and velocity conversion factors to the motor
+        driveMotor.getEncoder().setPositionConversionFactor(conversionFactor);
+        driveMotor.getEncoder().setVelocityConversionFactor(conversionFactor);
         
-        driveMotor.setInverted(false);// Set motor inverted(set to false)
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 1000);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20); 
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
@@ -94,7 +87,7 @@ public class SwerveMoveNEO implements SwerveMoveMotor{
     }
 
     public void setDriveSpeed(double speed){
-        driveMotor.set(speed);//TODO: this is not right, pid contoller
+        driveMotor.getPIDController().setReference(speed, CANSparkMax.ControlType.kVelocity);
     }
 
     public double getDriveDistance(){

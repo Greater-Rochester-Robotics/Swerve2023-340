@@ -182,15 +182,16 @@ public class SwerveModule {
          * puts DriverStationWarning that an ABS sensor isn't working and uses the varOfRelToAbs to get a new currentAngle 
          * otherwise equates the varOfRelToAbs to the correct offset based on currrentRelPos and currentAngle
          */
-        if(rotationMotor.getRelEncSpeed() > -.25 || rotationMotor.getRelEncSpeed() < .25)
-        {
-            if(!(absSensor.getSpeedInRad() > -.25 && absSensor.getSpeedInRad() < .25)) {
-                DriverStation.reportWarning("An Abs Sensor is not working!", false);
-                currentAngle = new Rotation2d(currentRelPos - varOfRelToAbs);
-            } else {
-                varOfRelToAbs = currentRelPos - currentAngle.getRadians();
-            }
-        }
+        //TODO: try to fix
+        // if(rotationMotor.getRelEncSpeed() < -.25 || rotationMotor.getRelEncSpeed() > .25)
+        // {
+        //     if(absSensor.getSpeedInRad() > -.25 && absSensor.getSpeedInRad() < .25) {
+        //         DriverStation.reportWarning("An Abs Sensor is not working!", false);
+        //         currentAngle = new Rotation2d(currentRelPos - varOfRelToAbs);
+        //     } else {
+        //         varOfRelToAbs = currentRelPos - currentAngle.getRadians();
+        //     }
+        // }
         
         // Optimize targetState with Rotation2d object pulled from above
         targetState = optimize(targetState, currentAngle);
