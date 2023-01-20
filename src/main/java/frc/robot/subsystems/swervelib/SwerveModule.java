@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.Constants;
+import frc.robot.subsystems.swervelib.ctre.SwerveRotationTalonSRX;
 import frc.robot.subsystems.swervelib.interfaces.SwerveAbsoluteSensor;
 import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
@@ -52,12 +52,11 @@ public class SwerveModule {
         this.absSensor = rotationNEO;
     }
 
-    //TODO: Write this class for SwerrveRotateTalonSRX Good for thriftyBot swerves
-    // public SwerveModule(SwerveMoveBase driveMotor, SwerveRotateTalonSRX rotationTalonSRX){
-    //     this.driveMotor = driveMotor;
-    //     this.rotationMotor = rotationTalonSRX;
-    //     this.absSensor = rotationTalonSRX;
-    // }
+    public SwerveModule(SwerveMoveMotor driveMotor, SwerveRotationTalonSRX rotationTalonSRX){
+        this.driveMotor = driveMotor;
+        this.rotationMotor = rotationTalonSRX;
+        this.absSensor = rotationTalonSRX;
+    }
 
     /**
      * 
