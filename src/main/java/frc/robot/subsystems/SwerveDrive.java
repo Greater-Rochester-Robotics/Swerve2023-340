@@ -79,10 +79,10 @@ public class SwerveDrive extends SubsystemBase {
       new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
       new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
       new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR  )
+      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR )
     };
     SwervePIDFConfig rotatePIDF = new SwervePIDFConfig(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE, Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
-    NEOConfig rotateConfig = new NEOConfig(rotatePIDF, false, false, Constants.MAXIMUM_VOLTAGE);
+    NEOConfig rotateConfig = new NEOConfig(rotatePIDF, true, false, Constants.MAXIMUM_VOLTAGE);
 
     swerveRotationNEO = new SwerveRotationNEO[]{
       new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
@@ -141,6 +141,10 @@ public class SwerveDrive extends SubsystemBase {
     SmartDashboard.putNumber("GyroX", this.getGyroInDegRoll());
     SmartDashboard.putNumber("GyroY", this.getGyroInDegPitch());
     SmartDashboard.putNumber("GyroZ", this.getGyroInDegYaw());
+
+    for(int i = 0; i < swerveModules.length; i++) {
+      SmartDashboard.putNumber("Module relative encoder " + i, swerveModules[i].getRotationMotor().getRelEncCount());
+    }
 
     // SmartDashboard.putNumber("GyroZ", this.getGyroInDegZ());
     //run odometry update on the odometry object
@@ -242,7 +246,6 @@ public class SwerveDrive extends SubsystemBase {
     SwerveModuleState oneSwerveState = new SwerveModuleState(moveSpeed, new Rotation2d(rotatePos));
     //code to drive one module in a testing form
     swerveModules[moduleNumber].setModuleState( oneSwerveState , isVeloMode );
-
   }
 
   /**

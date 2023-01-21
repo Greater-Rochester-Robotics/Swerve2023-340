@@ -185,7 +185,8 @@ public class SwerveModule {
         // if(rotationMotor.getRelEncSpeed() < -.25 || rotationMotor.getRelEncSpeed() > .25)
         // {
         //     if(absSensor.getSpeedInRad() > -.25 && absSensor.getSpeedInRad() < .25) {
-        //         DriverStation.reportWarning("An Abs Sensor is not working!", false);
+        //         DriverStation.reportWarning("An Abs Sensor is not working!" + rotationMotor.getRelEncSpeed() + " " + absSensor.getSpeedInRad(), false);
+
         //         currentAngle = new Rotation2d(currentRelPos - varOfRelToAbs);
         //     } else {
         //         varOfRelToAbs = currentRelPos - currentAngle.getRadians();
