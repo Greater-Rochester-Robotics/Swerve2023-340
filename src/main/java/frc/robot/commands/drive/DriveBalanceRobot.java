@@ -35,7 +35,6 @@ public class DriveBalanceRobot extends CommandBase {
   public void initialize() {
     // RobotContainer.swerveDrive.setIsOdometry(false);
     currentAngle = RobotContainer.swerveDrive.getGyroInDegYaw();
-    RobotContainer.swerveDrive.setIsOdometry(false);
     pidX.reset();
     pidY.reset();
   }
@@ -74,9 +73,7 @@ public class DriveBalanceRobot extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    RobotContainer.swerveDrive.setIsOdometry(true);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

@@ -39,7 +39,6 @@ public class DriveFieldRelativeAdvancedNoRotation extends CommandBase {
   public void initialize() {
     // RobotContainer.swerveDrive.setIsOdometry(false);
     currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
-    RobotContainer.swerveDrive.setIsOdometry(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -66,9 +65,7 @@ public class DriveFieldRelativeAdvancedNoRotation extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    RobotContainer.swerveDrive.setIsOdometry(true);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

@@ -89,8 +89,6 @@ public class DriveFollowTrajectory extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //make sure odometry is on
-    RobotContainer.swerveDrive.setIsOdometry(true);
 
     //start the timer, this must be reset also
     timer.reset();

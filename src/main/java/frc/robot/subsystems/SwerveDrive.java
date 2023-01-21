@@ -149,19 +149,11 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putNumber("Module relative encoder " + i, swerveModules[i].getRotationMotor().getRelEncCount());
     }
 
-    // SmartDashboard.putNumber("GyroZ", this.getGyroInDegZ());
     //run odometry update on the odometry object
-    if(isOdometry) {
-      
-      driveOdometry.update(getGyroRotation2d(), getSwerveModulePositions());
-      // SmartDashboard.putNumber("GyroRate", this.getRotationalVelocity());
-      // SmartDashboard.putNumber("Odometry X", getCurPose2d().getX());
-      // SmartDashboard.putNumber("Odometry Y", getCurPose2d().getY());
-    }
-  }
-
-  public void setIsOdometry(boolean isOdometry){
-    this.isOdometry = isOdometry;
+    driveOdometry.update(getGyroRotation2d(), getSwerveModulePositions());
+    // SmartDashboard.putNumber("GyroRate", this.getRotationalVelocity());
+    // SmartDashboard.putNumber("Odometry X", getCurPose2d().getX());
+    // SmartDashboard.putNumber("Odometry Y", getCurPose2d().getY());
   }
 
   public boolean getIsOdometry(){
