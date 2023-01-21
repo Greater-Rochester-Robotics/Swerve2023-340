@@ -45,7 +45,7 @@ public class SwerveDrive extends SubsystemBase {
   private static SwerveModule frontLeft, rearLeft, rearRight, frontRight;
   public MultiChannelADIS imu;
   private SwerveDriveKinematics driveKinematics;
-  public SwerveDriveOdometry driveOdometry;
+  public SwerveGRROdometry driveOdometry;
   private PIDController robotSpinController;
   private PIDController robotCounterSpinController;
   private boolean hasPoseBeenSet = false;
@@ -120,7 +120,7 @@ public class SwerveDrive extends SubsystemBase {
     imu = new MultiChannelADIS();
 
     //construct the odometry class.
-    driveOdometry = new SwerveDriveOdometry(driveKinematics, getGyroRotation2d(), getSwerveModulePositions());
+    driveOdometry = new SwerveGRROdometry(driveKinematics, getGyroRotation2d(), getSwerveModulePositions());
 
     //construct the wpilib PIDcontroller for rotation.
 
