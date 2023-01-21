@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import frc.robot.commands.drive.DriveFieldRelative;
 import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
-
+import frc.robot.commands.drive.DriveLockWheels;
 import frc.robot.commands.drive.DriveRobotCentric;
 import frc.robot.commands.drive.DriveStopAllModules;
 import frc.robot.commands.drive.auto.DriveFollowTrajectory;
@@ -136,6 +136,7 @@ public class RobotContainer {
     SmartDashboard.putData("Drive Module 3", new DriveOneModule(3));//For setup of swerve
     SmartDashboard.putData(new DriveAllModulesPositionOnly());
     SmartDashboard.putData(new DriveStopAllModules());//For setup of swerve
+    SmartDashboard.putData("Lock Wheels", new DriveLockWheels());
 
 
 

@@ -50,7 +50,7 @@ public class DriveStraightBack extends CommandBase {
     timer.reset();
     timer.start();
     curDistance = distance;
-    currentAngle = RobotContainer.swerveDrive.getGyroInRadPitch();
+    currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

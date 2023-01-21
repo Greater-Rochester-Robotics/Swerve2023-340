@@ -41,7 +41,7 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
   @Override
   public void initialize() {
     // RobotContainer.swerveDrive.setIsOdometry(false);
-    currentAngle = RobotContainer.swerveDrive.getGyroInRadPitch();
+    currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
     wasDriverControl = false;
     RobotContainer.swerveDrive.setIsOdometry(false);
   }
@@ -80,7 +80,7 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
         false
       );
       //for when rotation speed is zero, update the current angle
-      currentAngle = RobotContainer.swerveDrive.getGyroInRadPitch();
+      currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
       //means that driver wants to turn so don't run counter rotation PID
       wasDriverControl = true;
 
@@ -93,7 +93,7 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
           0,
           false
         );
-        currentAngle = RobotContainer.swerveDrive.getGyroInRadPitch();
+        currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
       }else{
         //if the test is false, still use driveFieldCentric(), but for last parameter use PIDController accessor function
         RobotContainer.swerveDrive.driveFieldRelative(

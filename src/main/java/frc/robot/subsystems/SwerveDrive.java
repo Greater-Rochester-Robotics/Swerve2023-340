@@ -138,9 +138,12 @@ public class SwerveDrive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("GyroX", this.getGyroInDegRoll());
-    SmartDashboard.putNumber("GyroY", this.getGyroInDegPitch());
-    SmartDashboard.putNumber("GyroZ", this.getGyroInDegYaw());
+    SmartDashboard.putNumber("GyroRoll", this.getGyroInDegRoll());
+    SmartDashboard.putNumber("GyroPitch", this.getGyroInDegPitch());
+    SmartDashboard.putNumber("GyroYaw", this.getGyroInDegYaw());
+
+    SmartDashboard.putNumber("GyroRollVel", this.getRotationalVelocityRoll());
+    SmartDashboard.putNumber("GyroPitchVel", this.getRotationalVelocityPitch());
 
     for(int i = 0; i < swerveModules.length; i++) {
       SmartDashboard.putNumber("Module relative encoder " + i, swerveModules[i].getRotationMotor().getRelEncCount());
@@ -321,19 +324,6 @@ public class SwerveDrive extends SubsystemBase {
   }
 
 
-  public double getRollAngle(){
-    return imu.getAngle(MultiChannelADIS.IMUAxis.kX);
-  }
-
-  public double getPitchAngle(){
-    return imu.getAngle(MultiChannelADIS.IMUAxis.kY);
-  }
-
-  public double getYawAngle(){
-    return imu.getAngle(MultiChannelADIS.IMUAxis.kZ);
-  }
-
-
   /**
    * A function that allows the user to reset the gyro, this 
    * makes the current orientation of the robot 0 degrees on 
@@ -429,7 +419,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public double findNearestAngle() {
-    double currentAngle = getYawAngle();
+    double currentAngle = getGyroInDegYaw();
     double distance = currentAngle % 90;
     if(Math.abs(distance) > 45) {
       return currentAngle + (Math.signum(distance)*90 - distance);

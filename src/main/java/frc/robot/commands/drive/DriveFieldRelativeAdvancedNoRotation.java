@@ -38,7 +38,7 @@ public class DriveFieldRelativeAdvancedNoRotation extends CommandBase {
   @Override
   public void initialize() {
     // RobotContainer.swerveDrive.setIsOdometry(false);
-    currentAngle = RobotContainer.swerveDrive.getGyroInRadPitch();
+    currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
     RobotContainer.swerveDrive.setIsOdometry(false);
   }
 
