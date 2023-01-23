@@ -170,18 +170,6 @@ public class RobotContainer {
     
   }
 
-  /**
-   * testing double supplier
-   */
-  public double speedIShoot(){
-    return SmartDashboard.getNumber("SpeedIShoot",0.0);
-  }
-  /**
-   * testing double supplier
-   */
-  public double angleIShoot(){
-    return SmartDashboard.getNumber("angleIShoot",0.0);
-  }
 
   /**
    * Define all autonomous modes here to have them 
