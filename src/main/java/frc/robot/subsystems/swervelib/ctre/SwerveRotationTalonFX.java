@@ -4,47 +4,61 @@
 
 package frc.robot.subsystems.swervelib.ctre;
 
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+
 import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 
 /** Add your docs here. */
 public class SwerveRotationTalonFX implements SwerveRotationMotor {
+    private TalonFX rotationMotor;
+    
+    public SwerveRotationTalonFX(int rotationMotorID) {
+        this(rotationMotorID, new TalonFXConfiguration());
+    }
 
-    //TODO:Make a constructor needs a talonFX id, a TalonfX config object, a conversion factor(meters)
+    public SwerveRotationTalonFX(int rotationMotorID, TalonFXConfiguration config) {
+        this(rotationMotorID, config, 0.0);
+    }
+
+    public SwerveRotationTalonFX(int rotationMotorID, TalonFXConfiguration config, double encToRadConvFactor) {
+        rotationMotor = new TalonFX(rotationMotorID);
+        rotationMotor.configAllSettings(config);
+        rotationMotor.configSelectedFeedbackCoefficient(encToRadConvFactor);
+    }
 
     @Override
     public void setRotationMotorPIDF(double P, double I, double D, double F) {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.config_kP(0, P);
+        rotationMotor.config_kD(0, D);
+        rotationMotor.config_kI(0, I);
+        rotationMotor.config_kF(0, F);
     }
 
     @Override
     public double getRelEncCount() {
-        // TODO Auto-generated method stub
-        return 0;
+        return rotationMotor.getSelectedSensorPosition();
     }
 
     @Override
     public double getRelEncSpeed() {
-        // TODO Auto-generated method stub
-        return 0;
+        return rotationMotor.getSelectedSensorVelocity();
     }
 
     @Override
     public void driveRotateMotor(double dutyCycle) {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.set(TalonFXControlMode.PercentOutput, dutyCycle);
     }
 
     @Override
     public void setRotationMotorPosition(double output) {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.set(TalonFXControlMode.Position, output);
     }
 
     @Override
     public void stopRotation() {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.set(TalonFXControlMode.PercentOutput, 0.0);
     }
     
 }

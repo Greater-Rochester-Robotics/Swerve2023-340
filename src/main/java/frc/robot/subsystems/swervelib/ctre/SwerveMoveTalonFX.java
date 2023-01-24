@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 
@@ -16,9 +17,20 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
     //TODO:finish writing this class
     private TalonFX driveMotor;
 
+    public SwerveMoveTalonFX(int driveMotorID) {
+        this(driveMotorID, new TalonFXConfiguration());
+    }
 
-    //TODO:Make a constructor needs a talonFX id, a TalonFX config object, a conversion factor(meters) 
-    //TODO: setup the motor in constructor
+    public SwerveMoveTalonFX(int driveMotorID, TalonFXConfiguration config) {
+        this(driveMotorID, config, 0.0);
+    }
+
+    public SwerveMoveTalonFX(int driveMotorID, TalonFXConfiguration config, double encToMetersConvFactor) {
+        driveMotor = new TalonFX(driveMotorID);
+        driveMotor.configAllSettings(config);
+        driveMotor.configSelectedFeedbackCoefficient(encToMetersConvFactor);
+    }
+    
     public void setDriveDutyCycle(double dutyCycle){
         driveMotor.set(ControlMode.PercentOutput, dutyCycle);
     }
@@ -44,7 +56,7 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
      * essentially resetting it. 
      */
     public void resetDriveMotorEncoder(){
-
+        driveMotor.setSelectedSensorPosition(0.0);
     }
 
     /**
@@ -65,7 +77,10 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
      * @param F value of the F constant
      */
     public void setDriveMotorPIDF(double P, double I, double D, double F){
-
+        driveMotor.config_kP(0, P);
+        driveMotor.config_kD(0, D);
+        driveMotor.config_kI(0, I);
+        driveMotor.config_kF(0, F);
     }
 
     public void enableVoltageCompensation(double maximumVoltage){

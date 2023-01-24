@@ -10,8 +10,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotContainer;
 
 /**
  * Class for swerve drive odometry. Odometry allows you to track the robot's position on the field
@@ -124,7 +122,7 @@ public class SwerveGRROdometry{
    *     in the same order in which you instantiated your SwerveDriveKinematics.
    * @return The new pose of the robot.
    */
-  public Pose2d update(Rotation2d gyroAngle, SwerveModulePosition[] modulePositions) {
+  public Pose2d update(Rotation2d gyroAngle, SwerveModulePosition[] modulePositions, double pitch, double roll) {
     if (modulePositions.length != m_numModules) {
       throw new IllegalArgumentException(
           "Number of modules is not consistent with number of wheel locations provided in "
@@ -145,18 +143,18 @@ public class SwerveGRROdometry{
 
     //accounts for tilt
     for (int index = 0; index < m_numModules; index++) {
-        //convert distance and rotation into x and y
-        double x = moduleDeltas[index].distanceMeters * moduleDeltas[index].angle.getCos();
-        double y = moduleDeltas[index].distanceMeters * moduleDeltas[index].angle.getSin();
-        //adjust x and y for tilt
-        x *= Math.cos(RobotContainer.swerveDrive.getGyroInRadRoll());
-        y *= Math.cos(RobotContainer.swerveDrive.getGyroInRadPitch());
-        // convert back to distance
-        double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        //TODO: do we need to recalculate this
-        // Rotation2d ang = new Rotation2d(x, y);
-        // moduleDeltas[index] = new SwerveModulePosition(distance, ang);
-        moduleDeltas[index].distanceMeters = distance;
+      //convert distance and rotation into x and y
+      double x = moduleDeltas[index].distanceMeters * moduleDeltas[index].angle.getCos();
+      double y = moduleDeltas[index].distanceMeters * moduleDeltas[index].angle.getSin();
+      //adjust x and y for tilt
+      x *= Math.cos(pitch);
+      y *= Math.cos(roll);
+      //convert back to distance
+      double distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+      //calculate angle
+      Rotation2d ang = new Rotation2d(x, y);
+      //update moduleDeltas
+      moduleDeltas[index] = new SwerveModulePosition(distance, ang);
     }
 
     var twist = m_kinematics.toTwist2d(moduleDeltas);
