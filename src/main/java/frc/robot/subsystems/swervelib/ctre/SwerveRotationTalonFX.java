@@ -26,6 +26,8 @@ public class SwerveRotationTalonFX implements SwerveRotationMotor {
         rotationMotor = new TalonFX(rotationMotorID);
         rotationMotor.configAllSettings(config);
         rotationMotor.configSelectedFeedbackCoefficient(encToRadConvFactor);
+        //TODO:Save the conversion factor to a final in this class
+        
     }
 
     @Override
@@ -38,11 +40,14 @@ public class SwerveRotationTalonFX implements SwerveRotationMotor {
 
     @Override
     public double getRelEncCount() {
+        //TODO: convert value to Rad with conversion factor
         return rotationMotor.getSelectedSensorPosition();
     }
 
     @Override
     public double getRelEncSpeed() {
+        //TODO: convert value to Rad with conversion factor
+        //TODO: all sensor readings are in per 100ms, correct here for m/s
         return rotationMotor.getSelectedSensorVelocity();
     }
 
@@ -53,6 +58,7 @@ public class SwerveRotationTalonFX implements SwerveRotationMotor {
 
     @Override
     public void setRotationMotorPosition(double output) {
+        //TODO: convert value from Rad to encoder count with conversion factor
         rotationMotor.set(TalonFXControlMode.Position, output);
     }
 
