@@ -16,7 +16,7 @@ import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 public class SwerveMoveTalonFX implements SwerveMoveMotor {
     //TODO:finish writing this class
     private TalonFX driveMotor;
-
+    private final double ENC_TO_METERS_CONV_FACTOR;
     public SwerveMoveTalonFX(int driveMotorID) {
         this(driveMotorID, new TalonFXConfiguration());
     }
@@ -29,6 +29,7 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
         driveMotor = new TalonFX(driveMotorID);
         driveMotor.configAllSettings(config);
         driveMotor.configSelectedFeedbackCoefficient(encToMetersConvFactor);
+        ENC_TO_METERS_CONV_FACTOR = encToMetersConvFactor;
         //TODO:Save the conversion factor to a final in this class
     }
     
@@ -38,7 +39,7 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
 
     public void setDriveSpeed(double speed){
         //TODO: convert value to meters with conversion factor, also adjust for scalling of in terms of per 100ms
-        driveMotor.set(ControlMode.Velocity, speed);
+        driveMotor.set(ControlMode.Velocity, speed/ENC_TO_METERS_CONV_FACTOR/10);
     }
 
     /**
@@ -51,7 +52,7 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
 
     public double getDriveDistance(){
         //TODO: convert value to meters with conversion factor
-        return driveMotor.getSelectedSensorPosition();
+        return driveMotor.getSelectedSensorPosition()*ENC_TO_METERS_CONV_FACTOR;
     }
 
     /**
@@ -70,7 +71,7 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
     public double getDriveVelocity(){
         //TODO: convert value to meters with conversion factor
         //TODO: all sensor readings are in per 100ms, corrrect here for m/s
-        return driveMotor.getSelectedSensorVelocity();
+        return driveMotor.getSelectedSensorVelocity()*ENC_TO_METERS_CONV_FACTOR*10;
     }
 
     /**
