@@ -30,7 +30,6 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
         driveMotor.configAllSettings(config);
         driveMotor.configSelectedFeedbackCoefficient(encToMetersConvFactor);
         ENC_TO_METERS_CONV_FACTOR = encToMetersConvFactor;
-        //TODO:Save the conversion factor to a final in this class
     }
     
     public void setDriveDutyCycle(double dutyCycle){
@@ -38,7 +37,6 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
     }
 
     public void setDriveSpeed(double speed){
-        //TODO: convert value to meters with conversion factor, also adjust for scalling of in terms of per 100ms
         driveMotor.set(ControlMode.Velocity, speed/ENC_TO_METERS_CONV_FACTOR/10);
     }
 
@@ -51,7 +49,6 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
     }
 
     public double getDriveDistance(){
-        //TODO: convert value to meters with conversion factor
         return driveMotor.getSelectedSensorPosition()*ENC_TO_METERS_CONV_FACTOR;
     }
 
@@ -69,8 +66,6 @@ public class SwerveMoveTalonFX implements SwerveMoveMotor {
      * @return speed of the drive wheel
      */
     public double getDriveVelocity(){
-        //TODO: convert value to meters with conversion factor
-        //TODO: all sensor readings are in per 100ms, corrrect here for m/s
         return driveMotor.getSelectedSensorVelocity()*ENC_TO_METERS_CONV_FACTOR*10;
     }
 

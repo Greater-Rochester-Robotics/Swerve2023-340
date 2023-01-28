@@ -13,6 +13,7 @@ import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 /** Add your docs here. */
 public class SwerveRotationTalonFX implements SwerveRotationMotor {
     private TalonFX rotationMotor;
+    private final double ENC_TO_RADS_CONV_FACTOR;
     
     public SwerveRotationTalonFX(int rotationMotorID) {
         this(rotationMotorID, new TalonFXConfiguration());
@@ -26,8 +27,7 @@ public class SwerveRotationTalonFX implements SwerveRotationMotor {
         rotationMotor = new TalonFX(rotationMotorID);
         rotationMotor.configAllSettings(config);
         rotationMotor.configSelectedFeedbackCoefficient(encToRadConvFactor);
-        //TODO:Save the conversion factor to a final in this class
-        
+        ENC_TO_RADS_CONV_FACTOR = encToRadConvFactor;
     }
 
     @Override
@@ -40,15 +40,12 @@ public class SwerveRotationTalonFX implements SwerveRotationMotor {
 
     @Override
     public double getRelEncCount() {
-        //TODO: convert value to Rad with conversion factor
-        return rotationMotor.getSelectedSensorPosition();
+        return rotationMotor.getSelectedSensorPosition()*ENC_TO_RADS_CONV_FACTOR;
     }
 
     @Override
     public double getRelEncSpeed() {
-        //TODO: convert value to Rad with conversion factor
-        //TODO: all sensor readings are in per 100ms, correct here for m/s
-        return rotationMotor.getSelectedSensorVelocity();
+        return rotationMotor.getSelectedSensorVelocity()*ENC_TO_RADS_CONV_FACTOR*10;
     }
 
     @Override
@@ -58,8 +55,7 @@ public class SwerveRotationTalonFX implements SwerveRotationMotor {
 
     @Override
     public void setRotationMotorPosition(double output) {
-        //TODO: convert value from Rad to encoder count with conversion factor
-        rotationMotor.set(TalonFXControlMode.Position, output);
+        rotationMotor.set(TalonFXControlMode.Position, output/ENC_TO_RADS_CONV_FACTOR/10);
     }
 
     @Override
