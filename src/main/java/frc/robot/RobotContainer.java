@@ -30,7 +30,7 @@ import frc.robot.commands.drive.DriveLockWheels;
 import frc.robot.commands.drive.DriveRobotCentric;
 import frc.robot.commands.drive.DriveStopAllModules;
 import frc.robot.commands.drive.auto.DriveFollowTrajectory;
-import frc.robot.commands.drive.util.DriveAdjustModuleZeroPoint;
+import frc.robot.commands.drive.util.DriveAdjustModulesManually;
 import frc.robot.commands.drive.util.DriveAllModulesPositionOnly;
 import frc.robot.commands.drive.util.DriveFindMaxAccel;
 import frc.robot.commands.drive.util.DriveOneModule;
@@ -129,7 +129,7 @@ public class RobotContainer {
 
     //add some commands to dashboard for testing/configuring
     SmartDashboard.putData(new DriveResetAllModulePositionsToZero());//For setup of swerve
-    SmartDashboard.putData(new DriveAdjustModuleZeroPoint());//For setup of swerve
+    SmartDashboard.putData(new DriveAdjustModulesManually());//For setup of swerve
     SmartDashboard.putData("Drive Module 0", new DriveOneModule(0));//For setup of swerve
     SmartDashboard.putData("Drive Module 1", new DriveOneModule(1));//For setup of swerve
     SmartDashboard.putData("Drive Module 2", new DriveOneModule(2));//For setup of swerve
