@@ -24,12 +24,14 @@ import frc.robot.RobotContainer;
  * end.
  */
 public class DriveRobotCentric extends CommandBase {
+  private boolean isVeloMode;
   /**
    * Creates a new DriveRobotCentric.
    */
-  public DriveRobotCentric() {
+  public DriveRobotCentric(boolean isVeloMode) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.swerveDrive);
+    this.isVeloMode = isVeloMode;
   }
 
   // Called when the command is initially scheduled.
@@ -44,23 +46,23 @@ public class DriveRobotCentric extends CommandBase {
   public void execute() {
     RobotContainer.setDriverRumble(0.25, 0.25);
     //pull primary stick values, and put to awaySpeed and lateralSpeed doubles
-    double forwardSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftY);
-    double strafeSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftX);
+    double forwardSpeed = Robot.robotContainer.getRobotForwardFull(isVeloMode);
+    double strafeSpeed = Robot.robotContainer.getRobotLateralFull(isVeloMode);
     //check if secondary sticks are being used
     if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
       Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
       //if secondary sticks used, replace with secondary sticks witha slow factor
-      forwardSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*.5;
-      strafeSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*.5;
+      forwardSpeed = Robot.robotContainer.getRobotForwardSlow(isVeloMode);
+      strafeSpeed = Robot.robotContainer.getRobotLateralSlow(isVeloMode);
     }
     //create rotation speed from gamepad triggers
-    double rotSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger);
+    double rotSpeed = Robot.robotContainer.getRobotRotation();
 
     RobotContainer.swerveDrive.driveRobotCentric(
-      forwardSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,
-      strafeSpeed *Constants.DRIVER_SPEED_SCALE_LINEAR ,
-      rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL,
-      false,
+      forwardSpeed,
+      strafeSpeed,
+      rotSpeed,
+      isVeloMode,
       false
       );
   }

@@ -27,12 +27,14 @@ import frc.robot.subsystems.ADIS.IMUAxis;
  * to end.
  */
 public class DriveFieldRelative extends CommandBase {
+  private boolean isVeloMode;
   /**
    * Creates a new DriveFieldCentric.
    */
-  public DriveFieldRelative() {
+  public DriveFieldRelative(boolean isVeloMode) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.swerveDrive);
+    this.isVeloMode = isVeloMode;
   }
 
   // Called when the command is initially scheduled.
@@ -43,22 +45,22 @@ public class DriveFieldRelative extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double  awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftY);
-    double lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftX);
+    double  awaySpeed = Robot.robotContainer.getRobotForwardFull(isVeloMode);
+    double lateralSpeed = Robot.robotContainer.getRobotLateralFull(isVeloMode);
     //check if secondary sticks are being used
     if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
      Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
      //if secondary sticks used, replace with secondary sticks witha slow factor
-     awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*.5;
-     lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*.5;
+     awaySpeed = Robot.robotContainer.getRobotForwardSlow(isVeloMode);
+     lateralSpeed = Robot.robotContainer.getRobotLateralSlow(isVeloMode);
     }
-    double rotSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger);
+    double rotSpeed = Robot.robotContainer.getRobotRotation();
 
     RobotContainer.swerveDrive.driveFieldRelative(
-      awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-      lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-      rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL, 
-      false
+      awaySpeed,
+      lateralSpeed,
+      rotSpeed, 
+      isVeloMode
     );
   }
 

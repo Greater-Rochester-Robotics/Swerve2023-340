@@ -23,7 +23,7 @@ public class DriveOntoPlatform extends SequentialCommandGroup {
       //Wait unil robot is tilted up and therefore far enough up the ramp
       Commands.deadline(
         new WaitUntilCommand(this::isTilted), 
-        new DriveFieldRelativeAdvancedNoRotation()
+        new DriveFieldRelativeAdvancedNoRotation(false)
       ),
       //Balance on ramp, driver maintains ability to move left and right but not forward and back
       //Stop when gyro says we are balanced to continue

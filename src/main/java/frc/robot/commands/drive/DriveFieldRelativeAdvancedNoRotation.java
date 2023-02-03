@@ -27,11 +27,13 @@ import frc.robot.subsystems.ADIS.IMUAxis;
  */
 
 public class DriveFieldRelativeAdvancedNoRotation extends CommandBase {
+  private boolean isVeloMode;
   private double currentAngle = 0;
 
   /** Creates a new DriveFieldCentricAdvanced. */
-  public DriveFieldRelativeAdvancedNoRotation() {
+  public DriveFieldRelativeAdvancedNoRotation(boolean isVeloMode) {
     addRequirements(RobotContainer.swerveDrive);
+    this.isVeloMode = isVeloMode;
   }
 
   // Called when the command is initially scheduled.
@@ -45,14 +47,14 @@ public class DriveFieldRelativeAdvancedNoRotation extends CommandBase {
   @Override
   public void execute() {
     //pull primary stick values, and put to awaySpeed and lateralSpeed doubles
-    double awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftY);
-    double lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftX);
+    double awaySpeed = Robot.robotContainer.getRobotForwardFull(isVeloMode);
+    double lateralSpeed = Robot.robotContainer.getRobotForwardFull(isVeloMode);
     //check if secondary sticks are being used
     if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
       Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
       //if secondary sticks used, replace with secondary sticks witha slow factor
-      awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*.5;
-      lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*.5;
+      awaySpeed = Robot.robotContainer.getRobotForwardSlow(isVeloMode);
+      lateralSpeed = Robot.robotContainer.getRobotLateralSlow(isVeloMode);
     }
   
     RobotContainer.swerveDrive.driveFieldRelative(

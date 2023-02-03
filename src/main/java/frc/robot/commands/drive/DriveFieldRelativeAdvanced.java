@@ -29,12 +29,14 @@ import frc.robot.subsystems.ADIS.IMUAxis;
  */
 
 public class DriveFieldRelativeAdvanced extends CommandBase {
+  private boolean isVeloMode;
   private double currentAngle = 0;
   private boolean wasDriverControl;
 
   /** Creates a new DriveFieldCentricAdvanced. */
-  public DriveFieldRelativeAdvanced() {
+  public DriveFieldRelativeAdvanced(boolean isVeloMode) {
     addRequirements(RobotContainer.swerveDrive);
+    this.isVeloMode = isVeloMode;
   }
 
   // Called when the command is initially scheduled.
@@ -49,17 +51,17 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
   @Override
   public void execute() {
     //pull primary stick values, and put to awaySpeed and lateralSpeed doubles
-    double awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftY);
-    double lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kLeftX);
+    double awaySpeed = Robot.robotContainer.getRobotForwardFull(isVeloMode);
+    double lateralSpeed = Robot.robotContainer.getRobotForwardFull(isVeloMode);
     //check if secondary sticks are being used
     if(Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightY))>.1 ||
       Math.abs(Robot.robotContainer.getDriverAxis(Axis.kRightX))>.1){
       //if secondary sticks used, replace with secondary sticks witha slow factor
-      awaySpeed = Robot.robotContainer.getDriverAxis(Axis.kRightY)*.5;
-      lateralSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightX)*.5;
+      awaySpeed = Robot.robotContainer.getRobotForwardSlow(isVeloMode);
+      lateralSpeed = Robot.robotContainer.getRobotLateralSlow(isVeloMode);
     }
     //create rotation speed from gamepad triggers
-    double rotSpeed = Robot.robotContainer.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger);
+    double rotSpeed = Robot.robotContainer.getRobotRotation();
 
     //use DPad to turn to specific angles.
     // if(Robot.robotContainer.getDriverDPad() == 0){
@@ -73,10 +75,10 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
     if (Math.abs(rotSpeed) > .1){
       //if the test is true, just copy the DriveFieldCentric execute method
       RobotContainer.swerveDrive.driveFieldRelative(
-        awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-        lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-        rotSpeed*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL ,
-        false
+        awaySpeed,
+        lateralSpeed,
+        rotSpeed,
+        isVeloMode
       );
       //for when rotation speed is zero, update the current angle
       currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
@@ -87,19 +89,19 @@ public class DriveFieldRelativeAdvanced extends CommandBase {
     else {
       if(wasDriverControl && Math.abs(RobotContainer.swerveDrive.getRotationalVelocityPitch()) > 90.0){
         RobotContainer.swerveDrive.driveFieldRelative(
-          awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-          lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
+          awaySpeed,
+          lateralSpeed,
           0,
-          false
+          isVeloMode
         );
         currentAngle = RobotContainer.swerveDrive.getGyroInRadYaw();
       }else{
         //if the test is false, still use driveFieldCentric(), but for last parameter use PIDController accessor function
         RobotContainer.swerveDrive.driveFieldRelative(
-          awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
-          lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
+          awaySpeed,
+          lateralSpeed,
           RobotContainer.swerveDrive.getCounterRotationPIDOut(currentAngle),
-          false
+          isVeloMode
         );
         wasDriverControl = false;
       }

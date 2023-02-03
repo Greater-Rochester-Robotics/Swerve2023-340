@@ -118,7 +118,7 @@ public class RobotContainer {
     //create(construct) subsystems
     
     swerveDrive = new SwerveDrive();
-    swerveDrive.setDefaultCommand(new DriveFieldRelativeAdvanced());
+    swerveDrive.setDefaultCommand(new DriveFieldRelativeAdvanced(false));
     
 
     //Add all autos to the auto selector
@@ -157,7 +157,7 @@ public class RobotContainer {
     /* ==================== DRIVER BUTTONS ==================== */
     driverLB.whenActive(new DriveResetGyroToZero());
     // driverRB.whileActiveContinuous(new DriveOnTarget(0));
-    driverBack.or(driverStart).toggleWhenActive(new DriveRobotCentric()); 
+    driverBack.or(driverStart).toggleWhenActive(new DriveRobotCentric(false)); 
     // driverStart.whenPressed(new AutoMidFourBall());
     // driverStart.whileHeld(new SequentialCommandGroup(
     //   new DriveTurnToAngle(Math.toRadians(-135)).withTimeout(2.5),
@@ -264,6 +264,26 @@ public class RobotContainer {
    */
   public boolean getCoDriverButton(int buttonNum) {
     return coDriver.getRawButton(buttonNum);
+  }
+
+  public double getRobotForwardFull(boolean isVeloMode){
+    return Robot.robotContainer.getDriverAxis(Axis.kLeftY)*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+  }
+
+  public double getRobotForwardSlow(boolean isVeloMode){
+    return Robot.robotContainer.getDriverAxis(Axis.kRightY)*0.5*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+  }
+
+  public double getRobotLateralFull(boolean isVeloMode){
+    return Robot.robotContainer.getDriverAxis(Axis.kLeftX)*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+  }
+
+  public double getRobotLateralSlow(boolean isVeloMode){
+    return Robot.robotContainer.getDriverAxis(Axis.kRightX)*0.5*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+  }
+
+  public double getRobotRotation(){
+    return Robot.robotContainer.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger)*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL;
   }
 
 }
