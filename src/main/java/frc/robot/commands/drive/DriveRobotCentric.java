@@ -24,6 +24,7 @@ import frc.robot.RobotContainer;
  * end.
  */
 public class DriveRobotCentric extends CommandBase {
+  //isVeloMode says if velosity mode is inabled
   private boolean isVeloMode;
   /**
    * Creates a new DriveRobotCentric.

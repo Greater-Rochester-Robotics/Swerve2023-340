@@ -24,6 +24,7 @@ public class DriveFindMaxAccel extends CommandBase {
   @Override
   public void initialize() {
     
+    //Stops all modules and starts the timer
     // RobotContainer.swerveDrive.resetCurrentPos();
     RobotContainer.swerveDrive.stopAllModules();
     timer.reset();
@@ -33,13 +34,15 @@ public class DriveFindMaxAccel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //Drives the robot forword
     RobotContainer.swerveDrive.driveFieldRelative(1.0, 0.0, 0.0, false);
   }
 
   // Called once the command ends or is interrupted.
   @Override
+  //TODO: Should this be uncommented
   public void end(boolean interrupted) {
-    
+    //calculates the max exeleration
     // double accel = RobotContainer.swerveDrive.getCurrentVelocity().getX() *
     //   RobotContainer.swerveDrive.getCurrentVelocity().getX() /
     //   2 / RobotContainer.swerveDrive.getCurrentPose().getX();

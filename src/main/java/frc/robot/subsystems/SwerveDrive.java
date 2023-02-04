@@ -72,18 +72,24 @@ public class SwerveDrive extends SubsystemBase {
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
 
+    //Sets the pidf constants for the motors that move the robot
     SwervePIDFConfig movePidF = new SwervePIDFConfig(Constants.SWERVE_DRIVE_P_VALUE, Constants.SWERVE_DRIVE_I_VALUE, Constants.SWERVE_DRIVE_D_VALUE, Constants.SWERVE_DRIVE_FF_VALUE);
+    //Sets the move NEO's configuration
     NEOConfig moveConfig = new NEOConfig(movePidF, false, false, Constants.MAXIMUM_VOLTAGE);
     
+    //Constructs all of the move motors
     swerveMoveNEO = new SwerveMoveNEO[]{
       new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
       new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
       new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
       new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR )
     };
+    //Sets the pidf constants for the motors that rotate the swerve modules
     SwervePIDFConfig rotatePIDF = new SwervePIDFConfig(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE, Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
+    //Sets all of the rotation NEO's configuration
     NEOConfig rotateConfig = new NEOConfig(rotatePIDF, true, false, Constants.MAXIMUM_VOLTAGE);
 
+    //Constructs all of the rotation motors
     swerveRotationNEO = new SwerveRotationNEO[]{
       new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
       new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
@@ -91,6 +97,7 @@ public class SwerveDrive extends SubsystemBase {
       new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig)
     };
 
+    //Constructs the CANCoders
     swerveAbsoluteCANCoder = new SwerveAbsoluteCANCoder[]{
       new SwerveAbsoluteCANCoder(Constants.FRONT_LEFT_ROTATE_SENSOR),
       new SwerveAbsoluteCANCoder(Constants.REAR_LEFT_ROTATE_SENSOR),

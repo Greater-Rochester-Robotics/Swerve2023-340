@@ -35,6 +35,7 @@ public class DriveTurnToAngleInRad extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.swerveDrive);
 
+    //Checks if the angle is in radians
     if(Math.abs(angle) > Constants.TWO_PI){
       angle = 0.0;
       angleTooBig = true;
@@ -46,6 +47,7 @@ public class DriveTurnToAngleInRad extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Gets the supplier if there is one
     if(isDoubleSupplierMode) {
       this.angle = angleSupplier.getAsDouble();
     }
@@ -57,7 +59,9 @@ public class DriveTurnToAngleInRad extends CommandBase {
   public void execute() {
     double output = RobotContainer.swerveDrive.getRobotRotationPIDOut(angle);
     // System.out.println("pid output"+output);
+    //Turns the robot
     RobotContainer.swerveDrive.driveRobotCentric(0, 0, output, false, true);
+    //If the robot is facing the target within a certain tolerence than it increses the onTargetCount if not it sets the onTargetCount to 0
     if(Math.abs(angle - RobotContainer.swerveDrive.getGyroInRadYaw()) < .03){
       onTargetCount++;
     }else{
@@ -78,6 +82,6 @@ public class DriveTurnToAngleInRad extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return onTargetCount >= 10; 
+    return onTargetCount >= 10; //The command is finished if it has stayed on target ten or more times 
   }
 }

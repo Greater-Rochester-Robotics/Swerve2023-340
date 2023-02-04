@@ -32,17 +32,21 @@ public class DriveStraightBack extends CommandBase {
     addRequirements(RobotContainer.swerveDrive);
 
     this.distance = distance;
+    //Resets the timer
     timer = new Timer();
+    //makes a PID controler and initializes constraints, a goal position and an initial position
     backController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
     TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(Constants.MOTOR_MAXIMUM_VELOCITY, Constants.MAXIMUM_ACCELERATION);
     TrapezoidProfile.State goal = new TrapezoidProfile.State(distance, 0);
     TrapezoidProfile.State initial = new TrapezoidProfile.State(0, 0);
+    //Constructs a TrapezoidProfile
     profile = new TrapezoidProfile(constraints, goal, initial);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Resets all variables
     intpPose2d = RobotContainer.swerveDrive.getCurPose2d();
     curDistance = 0.0;
     backController.reset();
@@ -55,6 +59,7 @@ public class DriveStraightBack extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //Drives the robot strait back
     TrapezoidProfile.State targetState = profile.calculate(timer.get());
     curDistance = intpPose2d.getTranslation().getDistance(RobotContainer.swerveDrive.getCurPose2d().getTranslation());
     double output = targetState.velocity + backController.calculate(curDistance, distance);

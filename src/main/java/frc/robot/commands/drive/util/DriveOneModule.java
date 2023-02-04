@@ -27,11 +27,11 @@ public class DriveOneModule extends CommandBase {
   /**
    * Creates a new DriveOneModule.
    */
-  public DriveOneModule(int moduleNumber) {
+  public DriveOneModule(int moduleNum) {
     //use addRequirements() and pull the subSystem object from RobotContainer
     addRequirements(RobotContainer.swerveDrive);
     //assigns the passed module number to the field of similar name
-    moduleNum = moduleNumber;
+    this.moduleNum = moduleNum;
   }
   
   // Called when the command is initially scheduled.
@@ -50,6 +50,7 @@ public class DriveOneModule extends CommandBase {
       rotatePos = (rotatePos - Math.PI);
     }
 
+    //Puts modAngles and moduleVelocities onto the smart dashboard
     double[] modAngles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
     SmartDashboard.putNumber("frontLeftAngle", modAngles[SwerveModNum.frontLeft.getNumber()]);
     SmartDashboard.putNumber("frontRightAngle", modAngles[SwerveModNum.frontRight.getNumber()]);

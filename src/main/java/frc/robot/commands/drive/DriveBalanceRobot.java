@@ -24,6 +24,7 @@ public class DriveBalanceRobot extends CommandBase {
   /** Creates a new DriveFieldCentricAdvanced. */
   public DriveBalanceRobot() {
     addRequirements(RobotContainer.swerveDrive);
+    //Instantiats and sets the tolerence for both pid controllers
     pidX = new PIDController(0.5, 0.0, 0.05); //TODO: Tune all pid and tolerance values
     pidX.setTolerance(0.05);
     pidY = new PIDController(0.5, 0.0, 0.05);
@@ -42,6 +43,7 @@ public class DriveBalanceRobot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //Gets the pitch yaw and their velocity's
     double pitchAng = RobotContainer.swerveDrive.getGyroInDegPitch();
     double rollAng = RobotContainer.swerveDrive.getGyroInDegRoll();
     double pitchVel = RobotContainer.swerveDrive.getRotationalVelocityPitch();
@@ -62,6 +64,7 @@ public class DriveBalanceRobot extends CommandBase {
     }
   
     // TODO: allow driver to move side to side
+    //moves the robot using driveRobotCentric
     RobotContainer.swerveDrive.driveRobotCentric(
       forwardSpeed * -1.0,
       strafeSpeed * -1.0,

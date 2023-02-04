@@ -61,7 +61,7 @@ public class DriveFieldRelativeAdvancedNoRotation extends CommandBase {
       awaySpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
       lateralSpeed*-Constants.DRIVER_SPEED_SCALE_LINEAR,
       RobotContainer.swerveDrive.getCounterRotationPIDOut(currentAngle),
-      false
+      isVeloMode
     );
   }
 

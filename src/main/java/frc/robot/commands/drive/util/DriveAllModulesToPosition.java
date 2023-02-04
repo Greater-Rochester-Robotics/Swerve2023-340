@@ -16,7 +16,6 @@ public class DriveAllModulesToPosition extends CommandBase {
   boolean[] finishedArray = new boolean[4];
   /** Creates a new DriveAllModulesToPosition. */
   public DriveAllModulesToPosition(double angle) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;
     addRequirements(RobotContainer.swerveDrive);
 
@@ -29,9 +28,11 @@ public class DriveAllModulesToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //gets the target angles for the wheels
     double[] angles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
     double targetAngle = angle - RobotContainer.swerveDrive.getGyroInRadYaw();
     
+    //Drives all the wheels to the positiions they should be in
     for(int i=0;i<4;i++ ){
       RobotContainer.swerveDrive.driveOneModule(i, 0, targetAngle, false);
       finishedArray[i]= .17 > Math.abs(angles[i] -  Math.toDegrees(targetAngle));
@@ -45,6 +46,7 @@ public class DriveAllModulesToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //If all of the modules are at the correct positions then end the command
     return finishedArray[0]&&finishedArray[1]&&finishedArray[2]&&finishedArray[3];
   }
 }
