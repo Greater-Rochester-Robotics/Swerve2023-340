@@ -236,7 +236,10 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   public enum IMUAxis {
     kX,
     kY,
-    kZ
+    kZ,
+    kYaw,
+    kPitch,
+    kRoll
   }
 
   // Static Constants
@@ -245,8 +248,10 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   private static final double deg_to_rad = 0.0174532;
   private static final double grav = 9.81;
 
-  // User-specified yaw axis
+  // User-specified axeis
   private IMUAxis m_yaw_axis;
+  private IMUAxis m_pitch_axis;
+  private IMUAxis m_roll_axis;
 
   // Instant raw outputs
   private double m_gyro_rate_x = 0.0;
@@ -315,16 +320,20 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
   }
 
   public MultiChannelADIS() {
-    this(IMUAxis.kZ, SPI.Port.kOnboardCS0, CalibrationTime._4s);
+    this(IMUAxis.kZ, IMUAxis.kY, IMUAxis.kX, SPI.Port.kOnboardCS0, CalibrationTime._4s);
   }
 
   /**
    * @param yaw_axis The axis that measures the yaw
+   * @param pitch_axis The axis that measures the pitch
+   * @param roll_axis The axis that measures the roll
    * @param port The SPI Port the gyro is plugged into
    * @param cal_time Calibration time
    */
-  public MultiChannelADIS(IMUAxis yaw_axis, SPI.Port port, CalibrationTime cal_time) {
+  public MultiChannelADIS(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis, SPI.Port port, CalibrationTime cal_time) {
     m_yaw_axis = yaw_axis;
+    m_pitch_axis = pitch_axis;
+    m_roll_axis = roll_axis;
     m_calibration_time = cal_time.value;
     m_spi_port = port;
 
@@ -1009,6 +1018,21 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * @return Yaw axis angle in degrees (CCW positive) 
    */
   public synchronized double getAngle(IMUAxis axis) {
+  //if pitch yaw or roll is inputed than it is replaced with its equivelant axis
+  switch (axis) {
+    case kYaw: 
+      axis = m_yaw_axis;
+      break;
+    case kPitch: 
+      axis = m_pitch_axis;
+      break;
+    case kRoll: 
+      axis = m_roll_axis;
+      break;
+    default: //is it isn't pitch yaw or roll than the axis is left unchanged
+}
+//the axis is returned
+
     switch (axis) {
       case kX:
         
@@ -1026,6 +1050,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
           return m_simGyroAngleZ.get();
         }
         return m_integ_angle_z;
+        default:
     }
     return 0.0;
   }
@@ -1035,9 +1060,23 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * @return Yaw axis angular rate in degrees per second (CCW positive) 
    * */
   public synchronized double getRate(IMUAxis axis) {
+    //if pitch yaw or roll is inputed than it is replaced with its equivelant axis
+    switch (axis) {
+      case kYaw: 
+        axis = m_yaw_axis;
+        break;
+      case kPitch: 
+        axis = m_pitch_axis;
+        break;
+      case kRoll: 
+        axis = m_roll_axis;
+        break;
+      default: //is it isn't pitch yaw or roll than the axis is left unchanged
+    }
+    //the axis is returned
     switch (axis) {
       case kX:
-        
+
         if (m_simGyroRateX != null) {
           return m_simGyroRateX.get();
         }
@@ -1052,6 +1091,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
           return m_simGyroRateZ.get();
         }
         return m_gyro_rate_z;
+        default:
     }
       return 0.0;
   }
@@ -1061,6 +1101,14 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    */
   public IMUAxis getYawAxis() {
     return m_yaw_axis;
+  }
+
+  public IMUAxis getPitchAxis() {
+    return m_pitch_axis;
+  }
+
+  public IMUAxis getRollAxis() {
+    return m_roll_axis;
   }
 
   /** 
