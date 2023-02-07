@@ -46,28 +46,31 @@ public class DriveAdjustModulesManually extends CommandBase {
   @Override
   public void execute() {
     //read the position of all modules and print them
-    double[] modAngles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
-    double[] moduleDistances = RobotContainer.swerveDrive.getAllModuleDistance();
-    double[] modRelEnc = RobotContainer.swerveDrive.getAllModuleRelEnc();
-    double[] moduleVelocities = RobotContainer.swerveDrive.getAllModuleVelocity();
+
     
+    
+    double[] modAngles = RobotContainer.swerveDrive.getAllAbsModuleAngles();
     //test smartdashboard outputs, Module Angles and Encoder Counts
     SmartDashboard.putNumber("frontLeftAbsAngle", modAngles[SwerveModNum.frontLeft.getNumber()]);
-    SmartDashboard.putNumber("frontLeftRelEnc", modRelEnc[SwerveModNum.frontLeft.getNumber()]);
     SmartDashboard.putNumber("frontRightAbsAngle", modAngles[SwerveModNum.frontRight.getNumber()]);
-    SmartDashboard.putNumber("frontRightRelEnc", modRelEnc[SwerveModNum.frontRight.getNumber()]);
     SmartDashboard.putNumber("rearLeftAbsAngle", modAngles[SwerveModNum.rearLeft.getNumber()]);
-    SmartDashboard.putNumber("rearLeftRelEnc", modRelEnc[SwerveModNum.rearLeft.getNumber()]);
     SmartDashboard.putNumber("rearRightAbsAngle", modAngles[SwerveModNum.rearRight.getNumber()]);
-    SmartDashboard.putNumber("rearRightRelEnc", modRelEnc[SwerveModNum.rearRight.getNumber()]);
     // SmartDashboard.putNumber("gyroAngle",RobotContainer.swerveDrive.getGyroInDeg());
 
+    double[] modRelEnc = RobotContainer.swerveDrive.getAllModuleRelEnc();
+    SmartDashboard.putNumber("frontLeftRelEnc", modRelEnc[SwerveModNum.frontLeft.getNumber()]);
+    SmartDashboard.putNumber("frontRightRelEnc", modRelEnc[SwerveModNum.frontRight.getNumber()]);
+    SmartDashboard.putNumber("rearLeftRelEnc", modRelEnc[SwerveModNum.rearLeft.getNumber()]);
+    SmartDashboard.putNumber("rearRightRelEnc", modRelEnc[SwerveModNum.rearRight.getNumber()]);
+
+    double[] moduleDistances = RobotContainer.swerveDrive.getAllModuleDistance();
     //Push distances pulled from the modules' drive motors
     SmartDashboard.putNumber("frontLeftDistance", moduleDistances[SwerveModNum.frontLeft.getNumber()]);
     SmartDashboard.putNumber("frontRightDistance", moduleDistances[SwerveModNum.frontRight.getNumber()]);
     SmartDashboard.putNumber("rearLeftDistance", moduleDistances[SwerveModNum.rearLeft.getNumber()]);
     SmartDashboard.putNumber("rearRightDistance", moduleDistances[SwerveModNum.rearRight.getNumber()]);
 
+    double[] moduleVelocities = RobotContainer.swerveDrive.getAllModuleVelocity();
     //push velocities pulled from the drive motors
     SmartDashboard.putNumber("frontLeftVelocity", moduleVelocities[SwerveModNum.frontLeft.getNumber()]);
     SmartDashboard.putNumber("frontRightVelocity", moduleVelocities[SwerveModNum.frontRight.getNumber()]);

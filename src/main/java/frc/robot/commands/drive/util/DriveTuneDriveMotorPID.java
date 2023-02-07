@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.SwerveDrive.SwerveModNum;
 
 /**
  * A testing command meant to spin the motor at a specific 
@@ -25,7 +26,7 @@ public class DriveTuneDriveMotorPID extends CommandBase {
   public double kD = Constants.SWERVE_DRIVE_D_VALUE;
   public double kF = Constants.SWERVE_DRIVE_FF_VALUE;
   public double speed = 1;
-  private double[] angle = new double[]{Math.toRadians(135), Math.toRadians(135), Math.toRadians(-45), Math.toRadians(45)};    
+  private double[] angle = new double[]{Math.toRadians(135), Math.toRadians(-135), Math.toRadians(-45), Math.toRadians(45)};    
 
   /** Creates a new DriveTuneDriveMotorPIDF. */
   @Deprecated
@@ -70,10 +71,14 @@ public class DriveTuneDriveMotorPID extends CommandBase {
     //use driveOneModule for each motor, position setting m0 to 135, m1 to -135, m2 to -45, and m3 to 45, set speed to constructor param
     for (int i=0; i<4; i++){
       RobotContainer.swerveDrive.driveOneModule(i, speed, angle[i], true);
-      //Print all module velocities
-      SmartDashboard.putNumber("Module Velocity", RobotContainer.swerveDrive.getAllModuleVelocity()[i]);
     }
     
+    double[] moduleVelocities = RobotContainer.swerveDrive.getAllModuleVelocity();
+    //push velocities pulled from the drive motors
+    SmartDashboard.putNumber("frontLeftVelocity", moduleVelocities[SwerveModNum.frontLeft.getNumber()]);
+    SmartDashboard.putNumber("frontRightVelocity", moduleVelocities[SwerveModNum.frontRight.getNumber()]);
+    SmartDashboard.putNumber("rearLeftVelocity", moduleVelocities[SwerveModNum.rearLeft.getNumber()]);
+    SmartDashboard.putNumber("rearRightVelocity", moduleVelocities[SwerveModNum.rearRight.getNumber()]);
   }
 
   // Called once the command ends or is interrupted.

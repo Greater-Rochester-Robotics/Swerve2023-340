@@ -14,8 +14,11 @@ import frc.robot.RobotContainer;
  */
 public class DriveFindMaxAccel extends CommandBase {
   private Timer timer = new Timer();
+  private double speed = .75;
+  private double[] angle = new double[]{Math.toRadians(135), Math.toRadians(-135), Math.toRadians(-45), Math.toRadians(45)};
   /** Creates a new DriveFindMaxAccel. */
-  public DriveFindMaxAccel() {
+  public DriveFindMaxAccel(double speed) {
+    this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.swerveDrive);
   }
@@ -35,14 +38,17 @@ public class DriveFindMaxAccel extends CommandBase {
   @Override
   public void execute() {
     //Drives the robot forword
-    RobotContainer.swerveDrive.driveFieldRelative(1.0, 0.0, 0.0, false);
+    // RobotContainer.swerveDrive.driveFieldRelative(1.0, 0.0, 0.0, false);
+    for (int i=0; i<4; i++){
+      RobotContainer.swerveDrive.driveOneModule(i, speed, angle[i], false);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   //TODO: Should this be uncommented
   public void end(boolean interrupted) {
-    //calculates the max exeleration
+    //calculates the max acceleration
     // double accel = RobotContainer.swerveDrive.getCurrentVelocity().getX() *
     //   RobotContainer.swerveDrive.getCurrentVelocity().getX() /
     //   2 / RobotContainer.swerveDrive.getCurrentPose().getX();

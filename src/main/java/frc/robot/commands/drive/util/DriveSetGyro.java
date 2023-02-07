@@ -6,10 +6,16 @@ package frc.robot.commands.drive.util;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.MultiChannelADIS.IMUAxis;
 
 
 public class DriveSetGyro extends InstantCommand {
   private double angle;
+  IMUAxis axis;
+
+  public DriveSetGyro(double angle) {
+    this(angle,IMUAxis.kYaw);
+  }
 
   /**
    * Set the gyro's current angle to the input 
@@ -18,20 +24,27 @@ public class DriveSetGyro extends InstantCommand {
    * @param angle an angle in DEGREES!!!
    */
   //TODO: ask Rob why this is like this
-  public DriveSetGyro(double angle) {
+  public DriveSetGyro(double angle, IMUAxis axis) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.swerveDrive);
     this.angle = angle;
-   
+    this.axis = axis;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.swerveDrive.setGyroRollAngle(angle);
-    RobotContainer.swerveDrive.setGyroPitchAngle(angle);
-    RobotContainer.swerveDrive.setGyroYawAngle(angle);
-
+    switch (axis) {
+      case kYaw: case kZ:
+        RobotContainer.swerveDrive.setGyroYawAngle(angle);
+        break;
+      case kPitch: case kY:
+        RobotContainer.swerveDrive.setGyroPitchAngle(angle);
+        break;
+      case kRoll: case kX:
+        RobotContainer.swerveDrive.setGyroRollAngle(angle);
+        break;
+    }
   }
 
   public boolean runsWhenDisabled(){
