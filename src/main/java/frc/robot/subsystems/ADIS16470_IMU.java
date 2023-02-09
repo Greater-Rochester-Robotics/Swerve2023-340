@@ -56,7 +56,7 @@ import java.nio.ByteOrder;
   "PMD.EmptyIfStmt",
   "PMD.EmptyStatementNotInLoop"
 })
-public class MultiChannelADIS implements AutoCloseable, NTSendable {
+public class ADIS16470_IMU implements AutoCloseable, NTSendable {
   /* ADIS16470 Register Map Declaration */
   private static final int FLASH_CNT = 0x00; // Flash memory write count
   private static final int DIAG_STAT = 0x02; // Diagnostic and operational status
@@ -261,9 +261,9 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * Class that run in thread, calls acquisition of data
    */
   private static class AcquireTask implements Runnable {
-    private MultiChannelADIS imu;
+    private ADIS16470_IMU imu;
 
-    public AcquireTask(MultiChannelADIS imu) {
+    public AcquireTask(ADIS16470_IMU imu) {
       this.imu = imu;
     }
 
@@ -281,7 +281,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * SPI port, and a calibration time 
    * of 4 seconds.
    */
-  public MultiChannelADIS() {
+  public ADIS16470_IMU() {
     this(IMUAxis.kZ, IMUAxis.kY, IMUAxis.kX, SPI.Port.kOnboardCS0, CalibrationTime._4s);
   }
 
@@ -297,7 +297,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * @param pitch_axis The axis that measures the pitch
    * @param roll_axis The axis that measures the roll
    */
-  public MultiChannelADIS(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis){
+  public ADIS16470_IMU(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis){
     this(yaw_axis, pitch_axis, roll_axis, SPI.Port.kOnboardCS0, CalibrationTime._4s);
   }
 
@@ -313,7 +313,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * @param roll_axis The axis that measures the roll
    * @param cal_time Calibration time
    */
-  public MultiChannelADIS(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis, CalibrationTime cal_time){
+  public ADIS16470_IMU(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis, CalibrationTime cal_time){
     this(yaw_axis, pitch_axis, roll_axis, SPI.Port.kOnboardCS0, cal_time);
   }
 
@@ -327,7 +327,7 @@ public class MultiChannelADIS implements AutoCloseable, NTSendable {
    * @param port The SPI Port the gyro is plugged into
    * @param cal_time Calibration time
    */
-  public MultiChannelADIS(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis, SPI.Port port, CalibrationTime cal_time) {
+  public ADIS16470_IMU(IMUAxis yaw_axis, IMUAxis pitch_axis, IMUAxis roll_axis, SPI.Port port, CalibrationTime cal_time) {
     if(yaw_axis == IMUAxis.kYaw || yaw_axis == IMUAxis.kPitch || yaw_axis == IMUAxis.kRoll ||
         pitch_axis == IMUAxis.kYaw || pitch_axis == IMUAxis.kPitch || pitch_axis == IMUAxis.kRoll ||
         roll_axis == IMUAxis.kYaw || roll_axis == IMUAxis.kPitch || roll_axis == IMUAxis.kRoll){

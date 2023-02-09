@@ -43,7 +43,7 @@ public class SwerveDrive extends SubsystemBase {
   private static SwerveAbsoluteCANCoder swerveAbsoluteCANCoder[];
   private static SwerveModule swerveModules[];
   private static SwerveModule frontLeft, rearLeft, rearRight, frontRight;
-  public MultiChannelADIS imu;
+  public ADIS16470_IMU imu;
   private SwerveDriveKinematics driveKinematics;
   public SwerveGRROdometry driveOdometry;
   private PIDController robotSpinController;
@@ -124,7 +124,7 @@ public class SwerveDrive extends SubsystemBase {
       Constants.REAR_RIGHT_POSITION, Constants.FRONT_RIGHT_POSITION);
 
     // Constructs IMU object (gyro)
-    imu = new MultiChannelADIS();
+    imu = new ADIS16470_IMU();
 
     //construct the odometry class.
     driveOdometry = new SwerveGRROdometry(driveKinematics, getGyroRotation2d(), getSwerveModulePositions());
@@ -389,15 +389,15 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   public double getGyroInDegRoll(){
-    return imu.getAngle(MultiChannelADIS.IMUAxis.kX);
+    return imu.getAngle(ADIS16470_IMU.IMUAxis.kX);
   }
 
   public double getGyroInDegPitch(){
-    return imu.getAngle(MultiChannelADIS.IMUAxis.kY);
+    return imu.getAngle(ADIS16470_IMU.IMUAxis.kY);
   }
 
   public double getGyroInDegYaw(){
-    return imu.getAngle(MultiChannelADIS.IMUAxis.kZ);    
+    return imu.getAngle(ADIS16470_IMU.IMUAxis.kZ);    
   }
 
   /**
@@ -406,15 +406,15 @@ public class SwerveDrive extends SubsystemBase {
    * @return degrees per second
    */
    public double getRotationalVelocityRoll(){
-    return imu.getRate(MultiChannelADIS.IMUAxis.kX);
+    return imu.getRate(ADIS16470_IMU.IMUAxis.kX);
   }
 
   public double getRotationalVelocityPitch(){
-    return imu.getRate(MultiChannelADIS.IMUAxis.kY);
+    return imu.getRate(ADIS16470_IMU.IMUAxis.kY);
   }
 
   public double getRotationalVelocityYaw(){
-    return imu.getRate(MultiChannelADIS.IMUAxis.kZ);
+    return imu.getRate(ADIS16470_IMU.IMUAxis.kZ);
   }
 
   public double findNearestAngle() {
