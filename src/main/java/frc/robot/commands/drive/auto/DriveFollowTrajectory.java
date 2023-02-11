@@ -8,14 +8,8 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -34,12 +28,6 @@ public class DriveFollowTrajectory extends CommandBase {
 
   //space for the trajectory, generated from the pathfile
   PathPlannerTrajectory trajectory;
-
-  //mutli part PID controller made of the following PID controllers
-  HolonomicDriveController pathController;
-  static PIDController xController;
-  static PIDController yController;
-  static ProfiledPIDController rotationController;
 
   //whether of not this command resets the odometry to the starting point
   boolean resetOdometry;
@@ -60,6 +48,15 @@ public class DriveFollowTrajectory extends CommandBase {
   }
 
   public DriveFollowTrajectory(String pathFileName, double maxVel, double maxAccel, boolean resetOdometry) {
+    //generate a trajectory from the path in the given file given the filename, max velocity and max acceleration.
+    this(PathPlanner.loadPath(pathFileName, maxVel, maxAccel), resetOdometry);
+  }
+
+  public DriveFollowTrajectory(PathPlannerTrajectory trajectory) {
+    this(trajectory, true);
+  }
+  
+  public DriveFollowTrajectory(PathPlannerTrajectory trajectory, boolean resetOdometry) {
     //require the swerveDrive subsystem
     addRequirements(RobotContainer.swerveDrive);
 
@@ -67,19 +64,7 @@ public class DriveFollowTrajectory extends CommandBase {
     this.timer = new Timer();
 
     //generate a trajectory from the path in the given file given the filename, max velocity and max acceleration.
-    this.trajectory = PathPlanner.loadPath(pathFileName, maxVel, maxAccel);
-
-    //setup PID controllers for the xPostion on the field, the yPostion on the field, and the rotation of the robot
-    xController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
-    yController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
-    rotationController = new ProfiledPIDController(Constants.DRIVE_ROTATION_CONTROLLER_P, Constants.DRIVE_ROTATION_CONTROLLER_I, Constants.DRIVE_ROTATION_CONTROLLER_D,
-            new TrapezoidProfile.Constraints(Constants.DRIVE_MAX_ANGULAR_VELOCITY, Constants.DRIVE_MAX_ANGULAR_ACCEL));
-    
-    // rotationController.enableContinuousInput(-Math.PI, Math.PI);// our gyro isn't discontinous
-    rotationController.disableContinuousInput();//our gyro isn't discontinous
-
-    //pass the three PID controllers into the one drive controller
-    this.pathController = new HolonomicDriveController(xController, yController, rotationController);
+    this.trajectory = trajectory;
 
     //pass this value out of constructor
     this.resetOdometry = resetOdometry;
@@ -94,12 +79,11 @@ public class DriveFollowTrajectory extends CommandBase {
     timer.start();
 
     //poll the trajectory to find the first point
-    PathPlannerState initialState = (PathPlannerState) trajectory.sample(0.0);
+    // PathPlannerState initialState = (PathPlannerState) trajectory.sample(0.0);
+    PathPlannerState initialState = trajectory.getInitialState();
 
     //reset the PID controllers, zero the I error, etc.
-    xController.reset();
-    yController.reset();
-    rotationController.reset(initialState.holonomicRotation.getDegrees());
+    RobotContainer.swerveDrive.resetTrajectoryPIDControllers();
 
     //if we need to reset odometry...
     if(resetOdometry) {
@@ -117,23 +101,11 @@ public class DriveFollowTrajectory extends CommandBase {
 
     //based on the current time, find where the trajectory says the robot should be
     PathPlannerState desiredState = (PathPlannerState) trajectory.sample(time);
-    
-    //using the desiredState and the currentState, use the pathController to find the speeds the robot should be going
-    ChassisSpeeds robotSpeed = pathController.calculate(RobotContainer.swerveDrive.getCurPose2d(), desiredState, desiredState.holonomicRotation);
+
+    ChassisSpeeds robotSpeed = RobotContainer.swerveDrive.calculateSpeedsTraj(desiredState);
+
     //pass the robotSpeed to the swerveDrive
     RobotContainer.swerveDrive.driveRobotCentric(robotSpeed, true, false);
-
-    // Position Graph For Testing
-    // SmartDashboard.putNumber("PIDTarget", desiredState.getPos());
-    // SmartDashboard.putNumber("PIDActual", pathController.getTotalDistance());
-
-    // // Heading Graph For Testing
-    // SmartDashboard.putNumber("PIDTarget", desiredState.getHeading().getDegrees());
-    // SmartDashboard.putNumber("PIDActual", pathController.getCurrentHeading().getDegrees());
-
-    // Rotation Graph For Testing
-    // SmartDashboard.putNumber("PIDTarget", desiredState.getRotation().getDegrees());
-    // SmartDashboard.putNumber("PIDActual", RobotContainer.swerveDrive.getCurPose2d().getRotation().getDegrees());
   }
 
   // Called once the command ends or is interrupted.

@@ -6,18 +6,18 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -37,17 +37,34 @@ import frc.robot.subsystems.swervelib.rev.SwerveRotationNEO;
  * https://docs.google.com/presentation/d/1feVl0L5lgIKSZhKCheWgWhkOydIu-ibgdp7oqA0yqAQ/edit?usp=sharing
  */
 public class SwerveDrive extends SubsystemBase {
-  SwerveDrivePoseEstimator poseEst;
+  /** Pose Estimator */
+  PoseEstimator poseEst;
+
+  /** Motors */
   private static SwerveMoveNEO swerveMoveNEO[];
   private static SwerveRotationNEO swerveRotationNEO[];
   private static SwerveAbsoluteCANCoder swerveAbsoluteCANCoder[];
   private static SwerveModule swerveModules[];
   private static SwerveModule frontLeft, rearLeft, rearRight, frontRight;
+
+  /** Gyro */
   public ADIS16470_IMU imu;
+
+  /** Kineatics and Odometry */
   private SwerveDriveKinematics driveKinematics;
   public SwerveGRROdometry driveOdometry;
+
+  /** PID Controllers */
   private PIDController robotSpinController;
   private PIDController robotCounterSpinController;
+
+  /** Trajectory */
+  public PPHolonomicDriveController pathController;
+  public PIDController xController;
+  public PIDController yController;
+  public PIDController rotationController;
+
+  /** Booleans */
   private boolean hasPoseBeenSet = false;
   private boolean isOdometry = true;
 
@@ -137,6 +154,16 @@ public class SwerveDrive extends SubsystemBase {
     //construct the wpilib PIDcontroller for counter rotation.
     robotCounterSpinController = new PIDController(Constants.ROBOT_COUNTER_SPIN_P, Constants.ROBOT_COUNTER_SPIN_I, Constants.ROBOT_COUNTER_SPIN_D);
     robotCounterSpinController.setTolerance(Constants.ROBOT_SPIN_PID_TOLERANCE);
+
+    //setup PID controllers for the xPostion on the field, the yPostion on the field, and the rotation of the robot
+    xController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
+    yController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
+    rotationController = new PIDController(Constants.DRIVE_ROTATION_CONTROLLER_P, Constants.DRIVE_ROTATION_CONTROLLER_I, Constants.DRIVE_ROTATION_CONTROLLER_D);
+
+    rotationController.disableContinuousInput();//our gyro isn't discontinous
+
+    //pass the three PID controllers into the one drive controller
+    this.pathController = new PPHolonomicDriveController(xController, yController, rotationController);
 
     hasPoseBeenSet = false;
     isOdometry = true;
@@ -566,4 +593,19 @@ public class SwerveDrive extends SubsystemBase {
     return robotCounterSpinController.calculate(currentGyroPos, target);
   }
 
+  /** Reset the PID controllers, zero the I error, etc. */
+  public void resetTrajectoryPIDControllers() {
+    xController.reset();
+    yController.reset();
+    rotationController.reset();
+  }
+
+  /**
+   * Using the desiredState and the currentState, use the pathController to find the speeds the robot should be going
+   * @param desiredState {@link PathPlannerState} robot needs to be at
+   * @return {@link ChassisSpeeds} motors should move at to reach desired state
+   */
+  public ChassisSpeeds calculateSpeedsTraj(PathPlannerState desiredState) {
+    return pathController.calculate(getCurPose2d(), desiredState);
+  }
 }
