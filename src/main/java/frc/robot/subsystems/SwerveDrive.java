@@ -190,6 +190,10 @@ public class SwerveDrive extends SubsystemBase {
     // SmartDashboard.putNumber("Odometry Y", getCurPose2d().getY());
   }
 
+  /**
+   * Checks if odometry is being used
+   * @return true is odometry is on
+   */
   public boolean getIsOdometry(){
     return isOdometry;
   }
@@ -392,58 +396,104 @@ public class SwerveDrive extends SubsystemBase {
     //note that counterclockwise rotation is positive
   }
 
-  /**
-   * This polls the onboard gyro, which, when the robot boots,
-   * assumes and angle of zero, this needs to be positive when
-   * turning left
-   * @return the angle of the robot in radians
-   */
   // public double getGyroInRad(){
   //   return Math.toRadians(getGyroInDeg()); // Pull the gyro in degrees, convert and return in radians
   //   //note that counterclockwise rotation is positive
   // }
 
+  /**
+   * This polls the onboard gyro, which, when the robot boots,
+   * assumes and angle of zero, should be positive when right
+   * side of robot is tilted upwards
+   * @return The angle of the robot roll in radians
+   */
   public double getGyroInRadRoll(){
     return Math.toRadians(getGyroInDegRoll());
   }
 
+  /**
+   * This polls the onboard gyro, which, when the robot boots,
+   * assumes and angle of zero, should be positive when front
+   * of robot is tilted upwards
+   * @return The angle of the robot pitch in radians
+   */
   public double getGyroInRadPitch(){
     return Math.toRadians(getGyroInDegPitch());
   }
 
+  /**
+   * This polls the onboard gyro, which, when the robot boots,
+   * assumes and angle of zero, should be positive when robot
+   * turned left
+   * @return The angle of the robot yaw in radians
+   */
   public double getGyroInRadYaw(){
     return Math.toRadians(getGyroInDegYaw());
   }
 
+  /**
+   * This polls the onboard gyro, which, when the robot boots,
+   * assumes and angle of zero, should be positive when right
+   * side of robot is tilted upwards
+   * @return The angle of the robot roll in degrees
+   */
   public double getGyroInDegRoll(){
     return imu.getAngle(ADIS16470_IMU.IMUAxis.kX);
   }
 
+  /**
+   * This polls the onboard gyro, which, when the robot boots,
+   * assumes and angle of zero, should be positive when front
+   * of robot is tilted upwards
+   * @return The angle of the robot pitch in degrees
+   */
   public double getGyroInDegPitch(){
     return imu.getAngle(ADIS16470_IMU.IMUAxis.kY);
   }
 
+  /**
+   * This polls the onboard gyro, which, when the robot boots,
+   * assumes and angle of zero, should be positive when robot
+   * turned left
+   * @return The angle of the robot yaw in radians
+   */
   public double getGyroInDegYaw(){
     return imu.getAngle(ADIS16470_IMU.IMUAxis.kZ);    
   }
 
   /**
-   * Returns the speed of rotation of the robot, 
-   * counterclockwise is positive.
+   * Returns the speed of rotation of the robot 
+   * roll, right side going up is positive.
    * @return degrees per second
    */
    public double getRotationalVelocityRoll(){
     return imu.getRate(ADIS16470_IMU.IMUAxis.kX);
   }
 
+  /**
+   * Returns the speed of rotation of the robot 
+   * pitch, front going up is positive.
+   * @return degrees per second
+   */
   public double getRotationalVelocityPitch(){
     return imu.getRate(ADIS16470_IMU.IMUAxis.kY);
   }
 
+  /**
+   * Returns the speed of rotation of the robot 
+   * yaw, turning left is positive
+   * @return degrees per second
+   */
   public double getRotationalVelocityYaw(){
     return imu.getRate(ADIS16470_IMU.IMUAxis.kZ);
   }
 
+  /**
+   * Finds nearest angle that would line the front
+   * of the robot up parallel with the ramp,
+   * for use in auto balancing
+   * @return nearest multiple of 90 degrees angle to gyro yaw
+   */
   public double findNearestAngle() {
     double currentAngle = getGyroInDegYaw();
     double distance = currentAngle % 90;
@@ -454,6 +504,11 @@ public class SwerveDrive extends SubsystemBase {
     }
   }
 
+  /**
+   * Accessor method for module positions array, puts all swerve
+   * module positions in a new array and returns
+   * @return new array with module positions
+   */
   public SwerveModulePosition[] getSwerveModulePositions(){
     //instatiate and construct a 4 large SwerveModuleState array
     SwerveModulePosition[] modulePositions =  new SwerveModulePosition[4];
@@ -465,6 +520,11 @@ public class SwerveDrive extends SubsystemBase {
     return modulePositions;
   }
 
+  /**
+   * Accessor method for module states array, puts all swerve
+   * module states in a new array and returns
+   * @return new array with module states
+   */
   public SwerveModuleState[] getSwerveModuleStates(){
     //instatiate and construct a 4 large SwerveModuleState array
     SwerveModuleState[] moduleStates =  new SwerveModuleState[4];
@@ -475,6 +535,7 @@ public class SwerveDrive extends SubsystemBase {
 
     return moduleStates;
   }
+
   /**
    * Returns all values from the module's absolute 
    * encoders, and returns them in an array of 
@@ -504,6 +565,7 @@ public class SwerveDrive extends SubsystemBase {
     }
     return moduleRelEnc;
   }
+
   /**
    * Returns the collective distance as seen by the 
    * drive motor's encoder, for each module.
@@ -569,7 +631,7 @@ public class SwerveDrive extends SubsystemBase {
   }
 
   /**
-   * 
+   * Gets output of rotational PID given a target angle
    * @param target an angle in radians
    * @return a value to give the rotational input, -1.0 to 1.0
    */
@@ -588,6 +650,11 @@ public class SwerveDrive extends SubsystemBase {
     }
   }
 
+  /**
+   * Gets output of rotational PID given a target angle
+   * @param target an angle in radians
+   * @return a value to give the rotational input, -1.0 to 1.0
+   */
   public double getCounterRotationPIDOut(double target){
     double currentGyroPos = getGyroInRadRoll();
     return robotCounterSpinController.calculate(currentGyroPos, target);
