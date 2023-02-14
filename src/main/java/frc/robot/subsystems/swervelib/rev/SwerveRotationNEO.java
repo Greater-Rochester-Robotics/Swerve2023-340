@@ -49,7 +49,8 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
         absoluteEncoder.setPositionConversionFactor(ABS_ENC_TO_RAD_CONV_FACTOR);
         absoluteEncoder.setVelocityConversionFactor(ABS_ENC_TO_RAD_CONV_FACTOR);
         
-        absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
+        absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);
+        // absoluteEncoder.setZeroOffset(absOffsetAngle); //TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
         
         // use the integrated sensor with the primary closed loop and timeout is 0.
         boolean areValuesUpdated = false;
@@ -162,7 +163,8 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
      */
     public void zeroAbsPositionSensor(){
         //set current position as zero, by making current sensor reading the offset
-        absOffsetAngle = absoluteEncoder.getPosition();//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
+        absOffsetAngle = absoluteEncoder.getPosition() - absoluteEncoder.getZeroOffset();
+        absoluteEncoder.setZeroOffset(absOffsetAngle);
         //commit offset value to preferences table
         Preferences.setDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), absOffsetAngle);
     }
@@ -171,7 +173,6 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
      * The CANCoder reads the absolute rotational position
      * of the module. This method returns that positon in 
      * degrees.
-     * note: NOT Inverted module safe (use getPosInRad())
      * 
      * @return the position of the module in degrees, should limit from -180 to 180
      */
@@ -186,7 +187,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
      * @return the position of the module in radians, should limit from -PI to PI
      */
     public double getPosInRad(){
-        return absoluteEncoder.getPosition() - absOffsetAngle;//TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
+        return absoluteEncoder.getPosition();
     }
 
     /**
