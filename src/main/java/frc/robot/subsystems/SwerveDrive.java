@@ -17,7 +17,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -675,10 +677,6 @@ public class SwerveDrive extends SubsystemBase {
   public ChassisSpeeds calculateSpeedsTraj(PathPlannerState desiredState) {
     return pathController.calculate(getCurPose2d(), desiredState);
   }
-
-
-  //TODO: flip the tragectory depending on alliance color
-  // this is so that we can use the red side paths for the blue side.
-  // input is a tragectory, output is flipped tragectory
-  // what we should change is just the Y adjusted by the width of the field
 }
+
+

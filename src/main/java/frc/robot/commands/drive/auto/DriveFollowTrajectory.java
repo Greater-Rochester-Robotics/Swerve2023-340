@@ -10,7 +10,9 @@ import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Constants;
@@ -77,6 +79,9 @@ public class DriveFollowTrajectory extends CommandBase {
     //start the timer, this must be reset also
     timer.reset();
     timer.start();
+
+    //TODO: When ready comment back in getAlliance
+    trajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, Alliance.Blue);//DriverStation.getAlliance());
 
     //poll the trajectory to find the first point
     // PathPlannerState initialState = (PathPlannerState) trajectory.sample(0.0);
