@@ -71,9 +71,9 @@ public class SwerveModule {
         // driveMotor to real distance, DRIVE_ENC_TO_METERS_FACTOR
         driveMotor.setIdleMode(IdleMode.kBrake);
         driveMotor.setInverted(false);// Set motor inverted(set to false)
-        driveMotor.enableVoltageCompensation(Constants.MAXIMUM_VOLTAGE);
-        setDriveMotorPIDF(Constants.SWERVE_DRIVE_P_VALUE, Constants.SWERVE_DRIVE_I_VALUE,
-                          Constants.SWERVE_DRIVE_D_VALUE, Constants.SWERVE_DRIVE_FF_VALUE);
+        driveMotor.enableVoltageCompensation(Constants.SwerveDriveConstants.MAXIMUM_VOLTAGE);
+        setDriveMotorPIDF(Constants.SwerveDriveConstants.SWERVE_DRIVE_P_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_I_VALUE,
+        Constants.SwerveDriveConstants.SWERVE_DRIVE_D_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_FF_VALUE);
         
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 1000);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20); //TODO: rethink if we need this speed, I don't think we do
@@ -88,9 +88,9 @@ public class SwerveModule {
         // rotationMotor.configSelectedFeedbackCoefficient(1);
         rotationMotor.setIdleMode(IdleMode.kBrake);
         rotationMotor.setInverted(true);// Set motor inverted(set to true)
-        rotationMotor.enableVoltageCompensation(Constants.MAXIMUM_VOLTAGE);
-        setRotationMotorPIDF(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE,
-                          Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
+        rotationMotor.enableVoltageCompensation(Constants.SwerveDriveConstants.MAXIMUM_VOLTAGE);
+        setRotationMotorPIDF(Constants.SwerveDriveConstants.SWERVE_ROT_P_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_I_VALUE,
+        Constants.SwerveDriveConstants.SWERVE_ROT_D_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_FF_VALUE);
         
         rotationMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 1000);
         rotationMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20); //TODO: rethink if we need this speed, I don't think we do
@@ -143,7 +143,7 @@ public class SwerveModule {
      * @return the distance the drive wheel has traveled
      */
     public double getDriveDistance() {
-        return driveMotor.getEncoder().getPosition()*Constants.DRIVE_ENC_TO_METERS_FACTOR;
+        return driveMotor.getEncoder().getPosition()*Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR;
     }
 
     /**
@@ -152,7 +152,7 @@ public class SwerveModule {
      * @return speed of the drive wheel
      */
     public double getDriveVelocity() {
-        return driveMotor.getEncoder().getPosition()*Constants.DRIVE_ENC_TO_METERS_FACTOR;
+        return driveMotor.getEncoder().getPosition()*Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR;
     }
 
     /**
@@ -312,11 +312,11 @@ public class SwerveModule {
         }
         
         // Convert the shortest distance of rotation to relative encoder value(use convertion factor)
-        double targetAngle = posDiff * Constants.RAD_TO_ENC_CONV_FACTOR;
+        double targetAngle = posDiff * Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR;
         // add the encoder distance to the current encoder count
         double outputEncValue = targetAngle + getRelEncCount();
 
-        if(Math.abs(targetState.speedMetersPerSecond) < (isVeloMode?Constants.MINIMUM_DRIVE_SPEED:Constants.MINIMUM_DRIVE_DUTY_CYCLE)) {
+        if(Math.abs(targetState.speedMetersPerSecond) < (isVeloMode?Constants.SwerveDriveConstants.MINIMUM_DRIVE_SPEED:Constants.SwerveDriveConstants.MINIMUM_DRIVE_DUTY_CYCLE)) {
             stopAll();
         } else {
             // Set the setpoint using setReference on the TalonFX
@@ -362,7 +362,7 @@ public class SwerveModule {
         }
         
         // Convert the shortest distance of rotation to relative encoder value(use convertion factor)
-        double targetAngle = posDiff * Constants.RAD_TO_ENC_CONV_FACTOR;
+        double targetAngle = posDiff * Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR;
         // add the encoder distance to the current encoder count
         double outputEncValue = targetAngle + getRelEncCount();
         

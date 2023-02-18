@@ -267,23 +267,23 @@ public class RobotContainer {
   }
 
   public double getRobotForwardFull(boolean isVeloMode) {
-    return this.getDriverAxis(Axis.kLeftY)*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+    return this.getDriverAxis(Axis.kLeftY)*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.SwerveDriveConstants.MOTOR_MAXIMUM_VELOCITY : 1.0);
   }
 
   public double getRobotForwardSlow(boolean isVeloMode) {
-    return this.getDriverAxis(Axis.kRightY)*0.5*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+    return this.getDriverAxis(Axis.kRightY)*0.5*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.SwerveDriveConstants.MOTOR_MAXIMUM_VELOCITY : 1.0);
   }
 
   public double getRobotLateralFull(boolean isVeloMode) {
-    return this.getDriverAxis(Axis.kLeftX)*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+    return this.getDriverAxis(Axis.kLeftX)*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.SwerveDriveConstants.MOTOR_MAXIMUM_VELOCITY : 1.0);
   }
 
   public double getRobotLateralSlow(boolean isVeloMode) {
-    return this.getDriverAxis(Axis.kRightX)*0.5*-Constants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.MOTOR_MAXIMUM_VELOCITY : 1.0);
+    return this.getDriverAxis(Axis.kRightX)*0.5*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.SwerveDriveConstants.MOTOR_MAXIMUM_VELOCITY : 1.0);
   }
 
   public double getRobotRotation() {
-    return this.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger)*-Constants.DRIVER_SPEED_SCALE_ROTATIONAL;
+    return this.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger)*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_ROTATIONAL;
   }
 
 }

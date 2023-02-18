@@ -21,10 +21,10 @@ import frc.robot.subsystems.SwerveDrive.SwerveModNum;
  * for use with https://docs.ctre-phoenix.com/en/latest/ch16_ClosedLoop.html
  */
 public class DriveTuneDriveMotorPID extends CommandBase {
-  public double kP = Constants.SWERVE_DRIVE_P_VALUE;
-  public double kI = Constants.SWERVE_DRIVE_I_VALUE;
-  public double kD = Constants.SWERVE_DRIVE_D_VALUE;
-  public double kF = Constants.SWERVE_DRIVE_FF_VALUE;
+  public double kP = Constants.SwerveDriveConstants.SWERVE_DRIVE_P_VALUE;
+  public double kI = Constants.SwerveDriveConstants.SWERVE_DRIVE_I_VALUE;
+  public double kD = Constants.SwerveDriveConstants.SWERVE_DRIVE_D_VALUE;
+  public double kF = Constants.SwerveDriveConstants.SWERVE_DRIVE_FF_VALUE;
   public double speed = 1;
   private double[] angle = new double[]{Math.toRadians(135), Math.toRadians(-135), Math.toRadians(-45), Math.toRadians(45)};    
 

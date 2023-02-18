@@ -23,7 +23,6 @@ public class DriveSetGyro extends InstantCommand {
    * 
    * @param angle an angle in DEGREES!!!
    */
-  //TODO: ask Rob why this is like this
   public DriveSetGyro(double angle, IMUAxis axis) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.swerveDrive);

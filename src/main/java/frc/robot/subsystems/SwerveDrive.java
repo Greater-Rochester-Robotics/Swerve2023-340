@@ -90,28 +90,28 @@ public class SwerveDrive extends SubsystemBase {
   public SwerveDrive() {
 
     //Sets the pidf constants for the motors that move the robot
-    SwervePIDFConfig movePidF = new SwervePIDFConfig(Constants.SWERVE_DRIVE_P_VALUE, Constants.SWERVE_DRIVE_I_VALUE, Constants.SWERVE_DRIVE_D_VALUE, Constants.SWERVE_DRIVE_FF_VALUE);
+    SwervePIDFConfig movePidF = new SwervePIDFConfig(Constants.SwerveDriveConstants.SWERVE_DRIVE_P_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_I_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_D_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_FF_VALUE);
     //Sets the move NEO's configuration
-    NEOConfig moveConfig = new NEOConfig(movePidF, false, false, Constants.MAXIMUM_VOLTAGE);
+    NEOConfig moveConfig = new NEOConfig(movePidF, false, false, Constants.SwerveDriveConstants.MAXIMUM_VOLTAGE);
     
     //Constructs all of the move motors
     swerveMoveNEO = new SwerveMoveNEO[]{
-      new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.DRIVE_ENC_TO_METERS_FACTOR )
+      new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR )
     };
     //Sets the pidf constants for the motors that rotate the swerve modules
-    SwervePIDFConfig rotatePIDF = new SwervePIDFConfig(Constants.SWERVE_ROT_P_VALUE, Constants.SWERVE_ROT_I_VALUE, Constants.SWERVE_ROT_D_VALUE, Constants.SWERVE_ROT_FF_VALUE);
+    SwervePIDFConfig rotatePIDF = new SwervePIDFConfig(Constants.SwerveDriveConstants.SWERVE_ROT_P_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_I_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_D_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_FF_VALUE);
     //Sets all of the rotation NEO's configuration
-    NEOConfig rotateConfig = new NEOConfig(rotatePIDF, true, false, Constants.MAXIMUM_VOLTAGE);
+    NEOConfig rotateConfig = new NEOConfig(rotatePIDF, true, false, Constants.SwerveDriveConstants.MAXIMUM_VOLTAGE);
 
     //Constructs all of the rotation motors
     swerveRotationNEO = new SwerveRotationNEO[]{
-      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.RAD_TO_ENC_CONV_FACTOR, rotateConfig)
+      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
+      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
+      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
+      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig)
     };
 
     //Constructs the CANCoders
@@ -137,8 +137,8 @@ public class SwerveDrive extends SubsystemBase {
     
     //Create kinematics object, which converts between ChassisSpeeds and ModuleStates
     driveKinematics = new SwerveDriveKinematics(
-      Constants.FRONT_LEFT_POSITION, Constants.REAR_LEFT_POSITION, 
-      Constants.REAR_RIGHT_POSITION, Constants.FRONT_RIGHT_POSITION);
+      Constants.SwerveDriveConstants.FRONT_LEFT_POSITION, Constants.SwerveDriveConstants.REAR_LEFT_POSITION, 
+      Constants.SwerveDriveConstants.REAR_RIGHT_POSITION, Constants.SwerveDriveConstants.FRONT_RIGHT_POSITION);
 
     // Constructs IMU object (gyro)
     imu = new ADIS16470_IMU();
@@ -148,17 +148,17 @@ public class SwerveDrive extends SubsystemBase {
 
     //construct the wpilib PIDcontroller for rotation.
 
-    robotSpinController = new PIDController(Constants.ROBOT_SPIN_P, Constants.ROBOT_SPIN_I, Constants.ROBOT_SPIN_D);
-    robotSpinController.setTolerance(Constants.ROBOT_SPIN_PID_TOLERANCE);
+    robotSpinController = new PIDController(Constants.SwerveDriveConstants.ROBOT_SPIN_P, Constants.SwerveDriveConstants.ROBOT_SPIN_I, Constants.SwerveDriveConstants.ROBOT_SPIN_D);
+    robotSpinController.setTolerance(Constants.SwerveDriveConstants.ROBOT_SPIN_PID_TOLERANCE);
 
     //construct the wpilib PIDcontroller for counter rotation.
-    robotCounterSpinController = new PIDController(Constants.ROBOT_COUNTER_SPIN_P, Constants.ROBOT_COUNTER_SPIN_I, Constants.ROBOT_COUNTER_SPIN_D);
-    robotCounterSpinController.setTolerance(Constants.ROBOT_SPIN_PID_TOLERANCE);
+    robotCounterSpinController = new PIDController(Constants.SwerveDriveConstants.ROBOT_COUNTER_SPIN_P, Constants.SwerveDriveConstants.ROBOT_COUNTER_SPIN_I, Constants.SwerveDriveConstants.ROBOT_COUNTER_SPIN_D);
+    robotCounterSpinController.setTolerance(Constants.SwerveDriveConstants.ROBOT_SPIN_PID_TOLERANCE);
 
     //setup PID controllers for the xPostion on the field, the yPostion on the field, and the rotation of the robot
-    xController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
-    yController = new PIDController(Constants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.DRIVE_POS_ERROR_CONTROLLER_D);
-    rotationController = new PIDController(Constants.DRIVE_ROTATION_CONTROLLER_P, Constants.DRIVE_ROTATION_CONTROLLER_I, Constants.DRIVE_ROTATION_CONTROLLER_D);
+    xController = new PIDController(Constants.SwerveDriveConstants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.SwerveDriveConstants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.SwerveDriveConstants.DRIVE_POS_ERROR_CONTROLLER_D);
+    yController = new PIDController(Constants.SwerveDriveConstants.DRIVE_POS_ERROR_CONTROLLER_P, Constants.SwerveDriveConstants.DRIVE_POS_ERROR_CONTROLLER_I, Constants.SwerveDriveConstants.DRIVE_POS_ERROR_CONTROLLER_D);
+    rotationController = new PIDController(Constants.SwerveDriveConstants.DRIVE_ROTATION_CONTROLLER_P, Constants.SwerveDriveConstants.DRIVE_ROTATION_CONTROLLER_I, Constants.SwerveDriveConstants.DRIVE_ROTATION_CONTROLLER_D);
 
     rotationController.disableContinuousInput();//our gyro isn't discontinous
 
@@ -210,10 +210,10 @@ public class SwerveDrive extends SubsystemBase {
     //instantiate an array of SwerveModuleStates, set equal to the output of toSwerveModuleStates() 
     SwerveModuleState[] targetStates = driveKinematics.toSwerveModuleStates(chassisSpeeds);
     //use SwerveDriveKinematic.desaturateWheelSpeeds(), max speed is 1 if percentOutput, MaxVelovcity if velocity mode
-    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, isVeloMode? Constants.PATH_MAXIMUM_VELOCITY : 1.0);
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, isVeloMode? Constants.SwerveDriveConstants.PATH_MAXIMUM_VELOCITY : 1.0);
     
     for (int i = 0; i < targetStates.length; i++) {
-      if(!rotationOnlyMode && Math.abs(targetStates[i].speedMetersPerSecond) < (isVeloMode?Constants.MINIMUM_DRIVE_SPEED:Constants.MINIMUM_DRIVE_DUTY_CYCLE)){
+      if(!rotationOnlyMode && Math.abs(targetStates[i].speedMetersPerSecond) < (isVeloMode?Constants.SwerveDriveConstants.MINIMUM_DRIVE_SPEED:Constants.SwerveDriveConstants.MINIMUM_DRIVE_DUTY_CYCLE)){
         //stop this module if speed is too slow
         swerveModules[i].stopAll();
       }else{
@@ -345,7 +345,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     // Finds where the center of the field is with respect to the robot
-    Translation2d target = driveOdometry.getPoseMeters().getTranslation().minus(Constants.FIELD_CENTER);
+    Translation2d target = driveOdometry.getPoseMeters().getTranslation().minus(Constants.SwerveDriveConstants.FIELD_CENTER);
     //based on that, find the angle of the above Tanslation2d object
     double desiredAngle = Math.atan2(target.getY(), target.getX());
 
@@ -642,8 +642,8 @@ public class SwerveDrive extends SubsystemBase {
     if(robotSpinController.atSetpoint()){
       return 0.0;
     } else {
-      if (Math.abs(output) < Constants.MINIMUM_ROTATIONAL_OUTPUT){
-        return Constants.MINIMUM_ROTATIONAL_OUTPUT*Math.signum(output);
+      if (Math.abs(output) < Constants.SwerveDriveConstants.MINIMUM_ROTATIONAL_OUTPUT){
+        return Constants.SwerveDriveConstants.MINIMUM_ROTATIONAL_OUTPUT*Math.signum(output);
       }else {
         return output;
       }
