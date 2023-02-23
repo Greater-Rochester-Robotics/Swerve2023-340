@@ -4,49 +4,66 @@
 
 package frc.robot.subsystems.swervelib.ctre;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.subsystems.swervelib.interfaces.SwerveAbsoluteSensor;
 import frc.robot.subsystems.swervelib.interfaces.SwerveRotationMotor;
 
 /** Add your docs here. */
 public class SwerveRotationTalonSRX implements SwerveRotationMotor , SwerveAbsoluteSensor{
+    private TalonSRX rotationMotor;
+    private final double ENC_TO_RADS_CONV_FACTOR;
+    
+    public SwerveRotationTalonSRX(int rotationMotorID) {
+        this(rotationMotorID, new TalonSRXConfiguration());
+    }
 
-    //TODO:Make a constructor needs a talonSrX id, a TalonSRX config object, a conversion factor(meters) 
+    public SwerveRotationTalonSRX(int rotationMotorID, TalonSRXConfiguration config) {
+        this(rotationMotorID, config, 0.0);
+    }
+
+    public SwerveRotationTalonSRX(int rotationMotorID, TalonSRXConfiguration config, double encToRadConvFactor) {
+        rotationMotor = new TalonSRX(rotationMotorID);
+        rotationMotor.configAllSettings(config);
+        rotationMotor.configSelectedFeedbackCoefficient(encToRadConvFactor);
+        ENC_TO_RADS_CONV_FACTOR = encToRadConvFactor;
+    }
 
     @Override
     public void setRotationMotorPIDF(double P, double I, double D, double F) {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.config_kP(0, P);
+        rotationMotor.config_kD(0, D);
+        rotationMotor.config_kI(0, I);
+        rotationMotor.config_kF(0, F);
     }
 
     @Override
     public double getRelEncCount() {
-        // TODO Auto-generated method stub
-        return 0;
+        return rotationMotor.getSelectedSensorPosition()*ENC_TO_RADS_CONV_FACTOR;
     }
 
     @Override
     public double getRelEncSpeed() {
-        // TODO Auto-generated method stub
-        return 0;
+        return rotationMotor.getSelectedSensorVelocity()*ENC_TO_RADS_CONV_FACTOR*10;
+        
     }
 
     @Override
     public void driveRotateMotor(double dutyCycle) {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.set(TalonSRXControlMode.PercentOutput, dutyCycle);
     }
 
     @Override
     public void setRotationMotorPosition(double output) {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.set(TalonSRXControlMode.Position, output/ENC_TO_RADS_CONV_FACTOR/10);
     }
 
     @Override
     public void stopRotation() {
-        // TODO Auto-generated method stub
-        
+        rotationMotor.set(TalonSRXControlMode.PercentOutput, 0.0);
     }
 
     @Override

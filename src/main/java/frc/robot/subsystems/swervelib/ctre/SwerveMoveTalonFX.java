@@ -14,7 +14,6 @@ import frc.robot.subsystems.swervelib.interfaces.SwerveMoveMotor;
 
 /** Add your docs here. */
 public class SwerveMoveTalonFX implements SwerveMoveMotor {
-    //TODO:finish writing this class
     private TalonFX driveMotor;
     private final double ENC_TO_METERS_CONV_FACTOR;
     public SwerveMoveTalonFX(int driveMotorID) {
