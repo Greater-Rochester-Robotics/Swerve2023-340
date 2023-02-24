@@ -32,7 +32,7 @@ public final class Constants {
         public static final Translation2d FRONT_RIGHT_POSITION = new Translation2d(.3016,-.3016); 
 
         /* Swerve Module Drive Motor Constants */
-        public static final double DRIVE_ENC_TO_METERS_FACTOR = 0.00002153;//7.13:1//the ratio from mechanical specs
+        public static final double DRIVE_ENC_TO_METERS_FACTOR = 0.319186/7.13;//7.13:1//the ratio from mechanical specs
         public static final double MINIMUM_DRIVE_SPEED = 0.01;// the slowest the wheels can turn, in m/s
         public static final double MINIMUM_DRIVE_DUTY_CYCLE = 0.05;// the slowest the wheels can turn, in duty cycle
         public static final double MOTOR_MAXIMUM_VELOCITY = 4.62;//4.33 5.19
@@ -51,7 +51,7 @@ public final class Constants {
 
 
         /* Swerve Module Rotation constants */
-        public static final double RAD_TO_ENC_CONV_FACTOR = 14.13675; // 10.1859; // the radian to enc factor
+        public static final double ENC_TO_RAD_CONV_FACTOR = TWO_PI / 13.71; // 13.71:1 //TODO: get the right number
         public static final double SWERVE_ROT_P_VALUE = 0.1;//.1;
         public static final double SWERVE_ROT_I_VALUE = 0.0;
         public static final double SWERVE_ROT_D_VALUE = 0.05; 

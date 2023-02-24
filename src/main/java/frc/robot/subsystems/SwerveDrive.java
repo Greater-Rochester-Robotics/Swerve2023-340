@@ -95,10 +95,10 @@ public class SwerveDrive extends SubsystemBase {
 
     //Constructs all of the rotation motors
     swerveRotationNEO = new SwerveRotationNEO[]{
-      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
-      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
-      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
-      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG)
+      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, Constants.SwerveDriveConstants.ENC_TO_RAD_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
+      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, Constants.SwerveDriveConstants.ENC_TO_RAD_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
+      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, Constants.SwerveDriveConstants.ENC_TO_RAD_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
+      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, Constants.SwerveDriveConstants.ENC_TO_RAD_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG)
     };
 
     // Constructs the swerve modules 
