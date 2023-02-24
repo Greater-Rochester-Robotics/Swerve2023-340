@@ -49,8 +49,8 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
         absoluteEncoder.setPositionConversionFactor(ABS_ENC_TO_RAD_CONV_FACTOR);
         absoluteEncoder.setVelocityConversionFactor(ABS_ENC_TO_RAD_CONV_FACTOR);
         
-        absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);
-        // absoluteEncoder.setZeroOffset(absOffsetAngle); //TODO: set up using absoluteEncoder.setZeroOffset(absOffsetAngle)
+        // absOffsetAngle = Preferences.getDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), 0.0);
+        // absoluteEncoder.setZeroOffset(absOffsetAngle);
         
         // use the integrated sensor with the primary closed loop and timeout is 0.
         boolean areValuesUpdated = false;
@@ -165,6 +165,7 @@ public class SwerveRotationNEO implements SwerveRotationMotor , SwerveAbsoluteSe
         //set current position as zero, by making current sensor reading the offset
         absOffsetAngle = absoluteEncoder.getPosition() - absoluteEncoder.getZeroOffset();
         absoluteEncoder.setZeroOffset(absOffsetAngle);
+        rotationMotor.burnFlash();
         //commit offset value to preferences table
         Preferences.setDouble("SwerveRotationNeoAbsOffset" + rotationMotor.getDeviceId(), absOffsetAngle);
     }

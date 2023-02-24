@@ -17,17 +17,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 import frc.robot.Constants;
 import frc.robot.subsystems.swervelib.SwerveModule;
-import frc.robot.subsystems.swervelib.SwervePIDFConfig;
-import frc.robot.subsystems.swervelib.ctre.SwerveAbsoluteCANCoder;
-import frc.robot.subsystems.swervelib.rev.NEOConfig;
 import frc.robot.subsystems.swervelib.rev.SwerveMoveNEO;
 import frc.robot.subsystems.swervelib.rev.SwerveRotationNEO;
 
@@ -45,7 +39,6 @@ public class SwerveDrive extends SubsystemBase {
   /** Motors */
   private static SwerveMoveNEO swerveMoveNEO[];
   private static SwerveRotationNEO swerveRotationNEO[];
-  private static SwerveAbsoluteCANCoder swerveAbsoluteCANCoder[];
   private static SwerveModule swerveModules[];
   private static SwerveModule frontLeft, rearLeft, rearRight, frontRight;
 
@@ -90,44 +83,29 @@ public class SwerveDrive extends SubsystemBase {
   
   /** Creates a new SwerveDrive. */
   public SwerveDrive() {
-
-    //Sets the pidf constants for the motors that move the robot
-    SwervePIDFConfig movePidF = new SwervePIDFConfig(Constants.SwerveDriveConstants.SWERVE_DRIVE_P_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_I_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_D_VALUE, Constants.SwerveDriveConstants.SWERVE_DRIVE_FF_VALUE);
     //Sets the move NEO's configuration
-    NEOConfig moveConfig = new NEOConfig(movePidF, false, false, Constants.SwerveDriveConstants.MAXIMUM_VOLTAGE);
     
     //Constructs all of the move motors
     swerveMoveNEO = new SwerveMoveNEO[]{
-      new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
-      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, moveConfig, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR )
+      new SwerveMoveNEO(Constants.FRONT_LEFT_MOVE_MOTOR, Constants.SwerveDriveConstants.MOVE_CONFIG, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.REAR_LEFT_MOVE_MOTOR, Constants.SwerveDriveConstants.MOVE_CONFIG, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.REAR_RIGHT_MOVE_MOTOR, Constants.SwerveDriveConstants.MOVE_CONFIG, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR), 
+      new SwerveMoveNEO(Constants.FRONT_RIGHT_MOVE_MOTOR, Constants.SwerveDriveConstants.MOVE_CONFIG, Constants.SwerveDriveConstants.DRIVE_ENC_TO_METERS_FACTOR )
     };
-    //Sets the pidf constants for the motors that rotate the swerve modules
-    SwervePIDFConfig rotatePIDF = new SwervePIDFConfig(Constants.SwerveDriveConstants.SWERVE_ROT_P_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_I_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_D_VALUE, Constants.SwerveDriveConstants.SWERVE_ROT_FF_VALUE);
-    //Sets all of the rotation NEO's configuration
-    NEOConfig rotateConfig = new NEOConfig(rotatePIDF, true, false, Constants.SwerveDriveConstants.MAXIMUM_VOLTAGE);
 
     //Constructs all of the rotation motors
     swerveRotationNEO = new SwerveRotationNEO[]{
-      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig),
-      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, rotateConfig)
+      new SwerveRotationNEO(Constants.FRONT_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
+      new SwerveRotationNEO(Constants.REAR_LEFT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
+      new SwerveRotationNEO(Constants.REAR_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG),
+      new SwerveRotationNEO(Constants.FRONT_RIGHT_ROTATE_MOTOR, 1/Constants.SwerveDriveConstants.RAD_TO_ENC_CONV_FACTOR, Constants.SwerveDriveConstants.ROTATE_CONFIG)
     };
 
-    //Constructs the CANCoders
-    swerveAbsoluteCANCoder = new SwerveAbsoluteCANCoder[]{
-      new SwerveAbsoluteCANCoder(Constants.FRONT_LEFT_ROTATE_SENSOR),
-      new SwerveAbsoluteCANCoder(Constants.REAR_LEFT_ROTATE_SENSOR),
-      new SwerveAbsoluteCANCoder(Constants.REAR_RIGHT_ROTATE_SENSOR),
-      new SwerveAbsoluteCANCoder(Constants.FRONT_RIGHT_ROTATE_SENSOR)
-    };
     // Constructs the swerve modules 
-    frontLeft = new SwerveModule(swerveMoveNEO[0], swerveRotationNEO[0], swerveAbsoluteCANCoder[0]);
-    rearLeft = new SwerveModule(swerveMoveNEO[1], swerveRotationNEO[1], swerveAbsoluteCANCoder[1]);
-    rearRight = new SwerveModule(swerveMoveNEO[2], swerveRotationNEO[2], swerveAbsoluteCANCoder[2]);
-    frontRight = new SwerveModule(swerveMoveNEO[3], swerveRotationNEO[3], swerveAbsoluteCANCoder[3]);
+    frontLeft = new SwerveModule(swerveMoveNEO[0], swerveRotationNEO[0]);
+    rearLeft = new SwerveModule(swerveMoveNEO[1], swerveRotationNEO[1]);
+    rearRight = new SwerveModule(swerveMoveNEO[2], swerveRotationNEO[2]);
+    frontRight = new SwerveModule(swerveMoveNEO[3], swerveRotationNEO[3]);
     
      //This may seem repetitive, but it makes clear which module is which.
     swerveModules = new SwerveModule[]{
