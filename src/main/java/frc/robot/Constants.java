@@ -97,27 +97,22 @@ public final class Constants {
         /* Aiming Values*/
         public static final Translation2d FIELD_CENTER = new Translation2d();
     }
-    /* IDENTIFICATION NUMBERS FOR DEVICES */
-
-    /* CTRE motor and sensors */
-
-    public static final int FRONT_LEFT_MOVE_MOTOR = 3;//drive module 0
-    public static final int FRONT_LEFT_ROTATE_MOTOR = 4;//drive module 0
-    public static final int FRONT_LEFT_ROTATE_SENSOR = 5;//drive module 0
-
-    public static final int REAR_LEFT_MOVE_MOTOR = 6;//drive module 1
-    public static final int REAR_LEFT_ROTATE_MOTOR = 7;//drive module 1
-    public static final int REAR_LEFT_ROTATE_SENSOR = 8;//drive module 1
-
-    public static final int REAR_RIGHT_MOVE_MOTOR = 9;//drive module 2
-    public static final int REAR_RIGHT_ROTATE_MOTOR = 10;//drive module 2
-    public static final int REAR_RIGHT_ROTATE_SENSOR = 11;//drive module 2
     
-    public static final int FRONT_RIGHT_MOVE_MOTOR = 12;//drive module 3
-    public static final int FRONT_RIGHT_ROTATE_MOTOR = 13;//drive module 3
-    public static final int FRONT_RIGHT_ROTATE_SENSOR = 14;//drive module 3
-
+    /* IDENTIFICATION NUMBERS FOR DEVICES */
     /* Rev Robotics SparkMAXs */
+    public static final int FRONT_LEFT_MOVE_MOTOR = 2;//drive module 0
+    public static final int FRONT_LEFT_ROTATE_MOTOR = 3;//drive module 0
+
+    public static final int REAR_LEFT_MOVE_MOTOR = 4;//drive module 1
+    public static final int REAR_LEFT_ROTATE_MOTOR = 5;//drive module 1
+
+    public static final int REAR_RIGHT_MOVE_MOTOR = 6;//drive module 2
+    public static final int REAR_RIGHT_ROTATE_MOTOR = 7;//drive module 2
+    
+    public static final int FRONT_RIGHT_MOVE_MOTOR = 8;//drive module 3
+    public static final int FRONT_RIGHT_ROTATE_MOTOR = 9;//drive module 3
+
+
 
 
 }
