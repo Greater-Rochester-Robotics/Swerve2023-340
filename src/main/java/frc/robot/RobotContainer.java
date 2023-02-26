@@ -118,7 +118,7 @@ public class RobotContainer {
     //create(construct) subsystems
     
     swerveDrive = new SwerveDrive();
-    swerveDrive.setDefaultCommand(new DriveFieldRelativeAdvanced(false));
+    // swerveDrive.setDefaultCommand(new DriveFieldRelativeAdvanced(false));
     
 
     //Add all autos to the auto selector

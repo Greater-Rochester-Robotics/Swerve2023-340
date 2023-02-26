@@ -52,9 +52,9 @@ public final class Constants {
 
         /* Swerve Module Rotation constants */
         public static final double ENC_TO_RAD_CONV_FACTOR = TWO_PI / 13.71; // 13.71:1 //TODO: get the right number
-        public static final double SWERVE_ROT_P_VALUE = 0.1;//.1;
+        public static final double SWERVE_ROT_P_VALUE = 0.5;//.1;
         public static final double SWERVE_ROT_I_VALUE = 0.0;
-        public static final double SWERVE_ROT_D_VALUE = 0.05; 
+        public static final double SWERVE_ROT_D_VALUE = 0.1; 
         public static final double SWERVE_ROT_I_ZONE_VALUE = 0;
         public static final double SWERVE_ROT_FF_VALUE = 0.0;
         public static final SwervePIDFConfig ROTATE_PIDF = new SwervePIDFConfig(SWERVE_ROT_P_VALUE, SWERVE_ROT_I_VALUE, SWERVE_ROT_D_VALUE, SWERVE_ROT_FF_VALUE);

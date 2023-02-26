@@ -72,7 +72,7 @@ public class SwerveMoveNEO implements SwerveMoveMotor{
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 2000);
-        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 2000);
+        driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
         driveMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 2000);
        
         //if values have changed burn NEO flash
