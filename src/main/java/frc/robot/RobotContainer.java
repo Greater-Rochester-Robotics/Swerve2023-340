@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 
 import frc.robot.commands.drive.DriveFieldRelative;
-import frc.robot.commands.drive.DriveFieldRelativeAdvanced;
 import frc.robot.commands.drive.DriveLockWheels;
 import frc.robot.commands.drive.DriveRobotCentric;
 import frc.robot.commands.drive.DriveStopAllModules;
@@ -213,6 +212,16 @@ public class RobotContainer {
   }
 
   /**
+     * accessor to get the true/false of the buttonNum 
+     * on the driver control
+     * @param buttonNum
+     * @return the value of the button
+     */
+    public boolean getDriverButton(int buttonNum) {
+      return driver.getRawButton(buttonNum);
+  }
+
+  /**
    * Returns the int position of the DPad/POVhat based
    * on the following table:
    *    input    |return
@@ -282,8 +291,16 @@ public class RobotContainer {
     return this.getDriverAxis(Axis.kRightX)*0.5*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_LINEAR * (isVeloMode? Constants.SwerveDriveConstants.MOTOR_MAXIMUM_VELOCITY : 1.0);
   }
 
-  public double getRobotRotation() {
-    return this.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger)*-Constants.SwerveDriveConstants.DRIVER_SPEED_SCALE_ROTATIONAL;
+  /**
+     * Gets the rotation value for the robot
+     * Currently: from the driver's controller for swerve (LT and RT).
+     * @param isVeloMode If velocity mode is being used.
+     * @return The percent output if velocity mode is not being used, otherwise the velocity. 
+     */
+    public double getRobotRotation (boolean isVeloMode) {
+      double raw = (this.getDriverAxis(Axis.kRightTrigger) - Robot.robotContainer.getDriverAxis(Axis.kLeftTrigger));
+      return -Math.copySign(Math.pow(raw, Constants.SwerveDriveConstants.DRIVER_ROT_SPEED_SCALE_EXPONENTIAL), raw) 
+          * (isVeloMode ? Constants.SwerveDriveConstants.MAX_ROBOT_ROT_VELOCITY : Constants.SwerveDriveConstants.DRIVER_PERCENT_ROT_SPEED_SCALE_LINEAR);
   }
 
 }
