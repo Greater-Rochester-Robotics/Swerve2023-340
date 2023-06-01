@@ -94,8 +94,18 @@ public final class Constants {
         /* Driver Scaling Constants */
         public static final double DRIVER_SPEED_SCALE_LINEAR = 0.65 * 0.85;
         public static final double DRIVER_SPEED_SCALE_ROTATIONAL = .75;
+        public static final double DRIVER_ROT_SPEED_SCALE_EXPONENTIAL = 1.0;
+        public static final double DRIVER_PERCENT_ROT_SPEED_SCALE_LINEAR = 1.0;
+
         /* Aiming Values*/
         public static final Translation2d FIELD_CENTER = new Translation2d();
+
+        /*Drive balance robot constants */
+        public static final double DRIVE_BALANCE_ROBOT_VELOCITY_TOLERANCE = 7;
+        public static final double DRIVE_BALANCE_ROBOT_ANGLE_TOLERANCE = 3;
+        public static final double DRIVE_BALANCE_ROBOT_ANGLE_TOLERANCE_AUTO = 13;
+        public static final double DRIVE_BALANCE_ROBOT_MAX_SPEED = 0.11;
+
     }
     
     /* IDENTIFICATION NUMBERS FOR DEVICES */

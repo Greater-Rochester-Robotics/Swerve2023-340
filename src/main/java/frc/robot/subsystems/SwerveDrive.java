@@ -21,8 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 import frc.robot.Constants;
-import frc.robot.subsystems.ADIS16470_IMU.IMUAxis;
+import frc.robot.subsystems.swervelib.ADIS16470_IMU;
 import frc.robot.subsystems.swervelib.SwerveModule;
+import frc.robot.subsystems.swervelib.ADIS16470_IMU.IMUAxis;
 import frc.robot.subsystems.swervelib.rev.SwerveMoveNEO;
 import frc.robot.subsystems.swervelib.rev.SwerveRotationNEO;
 

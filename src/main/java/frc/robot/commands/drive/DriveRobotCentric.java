@@ -57,7 +57,7 @@ public class DriveRobotCentric extends CommandBase {
       strafeSpeed = Robot.robotContainer.getRobotLateralSlow(isVeloMode);
     }
     //create rotation speed from gamepad triggers
-    double rotSpeed = Robot.robotContainer.getRobotRotation();
+    double rotSpeed = Robot.robotContainer.getRobotRotation(isVeloMode);
 
     RobotContainer.swerveDrive.driveRobotCentric(
       forwardSpeed,
