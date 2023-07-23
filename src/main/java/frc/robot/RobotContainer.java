@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -58,49 +58,49 @@ public class RobotContainer {
   // DRIVER BUTTONS //
   ////////////////////
 
-  static final Button driverA = new JoystickButton(driver, 1);
-  static final Button driverB = new JoystickButton(driver, 2);
-  static final Button driverX = new JoystickButton(driver, 3);
-  static final Button driverY = new JoystickButton(driver, 4);
-  static final Button driverLB = new JoystickButton(driver, 5);
-  static final Button driverRB = new JoystickButton(driver, 6);
-  static final Button driverBack = new JoystickButton(driver, 7);
-  static final Button driverStart = new JoystickButton(driver, 8);
-  static final Button driverLS = new JoystickButton(driver, 9);
-  static final Button driverRS = new JoystickButton(driver, 10);
-  static final Button driverDUp = new POVButton(driver, 0);
-  static final Button driverDDown = new POVButton(driver, 180);
-  static final Button driverDLeft = new POVButton(driver, 270);
-  static final Button driverDRight = new POVButton(driver, 90);
-  // final Button driverLTButton = new JoyTriggerButton(driver, .3, Axis.LEFT_TRIGGER);//This is used in driving, don't enable
-  // final Button driverRTButton = new JoyTriggerButton(driver, .3, Axis.RIGHT_TRIGGER);//This is used in driving, don't enable
+  static final Trigger driverA = new JoystickButton(driver, 1);
+  static final Trigger driverB = new JoystickButton(driver, 2);
+  static final Trigger driverX = new JoystickButton(driver, 3);
+  static final Trigger driverY = new JoystickButton(driver, 4);
+  static final Trigger driverLB = new JoystickButton(driver, 5);
+  static final Trigger driverRB = new JoystickButton(driver, 6);
+  static final Trigger driverBack = new JoystickButton(driver, 7);
+  static final Trigger driverStart = new JoystickButton(driver, 8);
+  static final Trigger driverLS = new JoystickButton(driver, 9);
+  static final Trigger driverRS = new JoystickButton(driver, 10);
+  static final Trigger driverDUp = new POVButton(driver, 0);
+  static final Trigger driverDDown = new POVButton(driver, 180);
+  static final Trigger driverDLeft = new POVButton(driver, 270);
+  static final Trigger driverDRight = new POVButton(driver, 90);
+  // final Trigger driverLTButton = new JoyTriggerButton(driver, .3, Axis.LEFT_TRIGGER);//This is used in driving, don't enable
+  // final Trigger driverRTButton = new JoyTriggerButton(driver, .3, Axis.RIGHT_TRIGGER);//This is used in driving, don't enable
 
   ///////////////////////
   // CO-DRIVER BUTTONS //
   ///////////////////////
 
-  static final Button coDriverA = new JoystickButton(coDriver, 1);
-  static final Button coDriverB = new JoystickButton(coDriver, 2);
-  static final Button coDriverX = new JoystickButton(coDriver, 3);
-  static final Button coDriverY = new JoystickButton(coDriver, 4);
-  static final Button coDriverLB = new JoystickButton(coDriver, 5);
-  static final Button coDriverRB = new JoystickButton(coDriver, 6);
-  static final Button coDriverBack = new JoystickButton(coDriver, 7);
-  static final Button coDriverStart = new JoystickButton(coDriver, 8);
-  static final Button coDriverLS = new JoystickButton(coDriver, 9);
-  static final Button coDriverRS = new JoystickButton(coDriver, 10);
-  static final Button coDriverDUp = new POVButton(coDriver, 0);
-  static final Button coDriverDDown = new POVButton(coDriver, 180);
-  static final Button coDriverDLeft = new POVButton(coDriver, 270);
-  static final Button coDriverDRight = new POVButton(coDriver, 90);
-  static final Button coDriverLTButton70 = new JoyTriggerButton(coDriver, .7, Axis.kLeftTrigger);
-  static final Button coDriverRTButton70 = new JoyTriggerButton(coDriver, .7, Axis.kRightTrigger);
-  static final Button coDriverLTButton25 = new JoyTriggerButton(coDriver, .25, Axis.kLeftTrigger);
-  static final Button coDriverRTButton25 = new JoyTriggerButton(coDriver, .25, Axis.kRightTrigger);
+  static final Trigger coDriverA = new JoystickButton(coDriver, 1);
+  static final Trigger coDriverB = new JoystickButton(coDriver, 2);
+  static final Trigger coDriverX = new JoystickButton(coDriver, 3);
+  static final Trigger coDriverY = new JoystickButton(coDriver, 4);
+  static final Trigger coDriverLB = new JoystickButton(coDriver, 5);
+  static final Trigger coDriverRB = new JoystickButton(coDriver, 6);
+  static final Trigger coDriverBack = new JoystickButton(coDriver, 7);
+  static final Trigger coDriverStart = new JoystickButton(coDriver, 8);
+  static final Trigger coDriverLS = new JoystickButton(coDriver, 9);
+  static final Trigger coDriverRS = new JoystickButton(coDriver, 10);
+  static final Trigger coDriverDUp = new POVButton(coDriver, 0);
+  static final Trigger coDriverDDown = new POVButton(coDriver, 180);
+  static final Trigger coDriverDLeft = new POVButton(coDriver, 270);
+  static final Trigger coDriverDRight = new POVButton(coDriver, 90);
+  static final Trigger coDriverLTButton70 = new JoyTriggerButton(coDriver, .7, Axis.kLeftTrigger);
+  static final Trigger coDriverRTButton70 = new JoyTriggerButton(coDriver, .7, Axis.kRightTrigger);
+  static final Trigger coDriverLTButton25 = new JoyTriggerButton(coDriver, .25, Axis.kLeftTrigger);
+  static final Trigger coDriverRTButton25 = new JoyTriggerButton(coDriver, .25, Axis.kRightTrigger);
 
   //Climber next step button is aliased here.
-  public static final Button climberManButton = coDriverA;
-  public static final Button climberAutoButton = coDriverB;
+  public static final Trigger climberManButton = coDriverA;
+  public static final Trigger climberAutoButton = coDriverB;
   
   
   //The robot's subsystems are instantiated here
